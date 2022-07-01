@@ -28,7 +28,7 @@ public class SoloGameStartController {
         stage.setTitle("Wisielec - Gra Solo");
         stage.setScene(scene);
         stage.show();
-        System.out.println("Wybór trybu solo dla użytkownika \"" + playerlogin + "\"");
+        System.out.println("Wybor trybu solo dla uzytkownika \"" + playerlogin + "\"");
     }
 
     @FXML private ImageView exitImage;
@@ -39,7 +39,7 @@ public class SoloGameStartController {
 
     @FXML
     public void beginNormalGame() {
-        System.out.println("Zaczynam grę solo w trybie NORMAL dla gracza \"" + playerlogin + "\"");
+        System.out.println("Zaczynam gre solo w trybie NORMAL dla gracza \"" + playerlogin + "\"");
 
         //  TUTAJ ZACZĄĆ GRE SOLO - NORMAL
 
@@ -49,7 +49,7 @@ public class SoloGameStartController {
 
     @FXML
     public void beginSpeedrunGame() {
-        System.out.println("Zaczynam grę solo w trybie SPEEDRUN dla gracza \"" + playerlogin + "\"");
+        System.out.println("Zaczynam gre solo w trybie SPEEDRUN dla gracza \"" + playerlogin + "\"");
 
         //  TUTAJ ZACZĄĆ GRE SOLO - SPEEDRUN
 

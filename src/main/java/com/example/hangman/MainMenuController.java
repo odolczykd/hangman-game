@@ -31,12 +31,12 @@ public class MainMenuController {
         stage.setTitle("Wisielec - Menu Główne");
         stage.setScene(scene);
         stage.show();
-        System.out.println("Menu główne dla użytkownika \"" + playerlogin + "\"");
+        System.out.println("Menu glowne (zalogowany: \"" + playerlogin + "\")");
     }
 
     @FXML
     public void soloGameStart() throws IOException {
-        System.out.println("zaczynam nową gre solo!");
+        System.out.println("zaczynam nowa gre solo!");
         SoloGameStartController sgsc = new SoloGameStartController(playerlogin);
         sgsc.openWindow();
         Stage stage = (Stage) soloGameImage.getScene().getWindow();
@@ -45,7 +45,7 @@ public class MainMenuController {
 
     @FXML
     public void duetGameStart() throws IOException {
-        System.out.println("zaczynam nową gre duet!");
+        System.out.println("zaczynam nowa gre duet!");
         DuetGameTypeController dgtc = new DuetGameTypeController(playerlogin);
         dgtc.openWindow();
         Stage stage = (Stage) soloGameImage.getScene().getWindow();
@@ -54,7 +54,7 @@ public class MainMenuController {
 
     @FXML
     public void rankView() throws IOException {
-        System.out.println("wyświetlam ranking!");
+        System.out.println("wyswietlam ranking!");
         RankController rnc = new RankController(playerlogin);
         rnc.openWindow();
         Stage stage = (Stage) soloGameImage.getScene().getWindow();
@@ -63,7 +63,7 @@ public class MainMenuController {
 
     @FXML
     public void profileView() throws IOException {
-        System.out.println("wyświetlam profil gracza " + playerlogin + "!");
+        System.out.println("wyswietlam profil gracza " + playerlogin + "!");
         ProfileController pc = new ProfileController(playerlogin);
         pc.openWindow();
         Stage stage = (Stage) soloGameImage.getScene().getWindow();

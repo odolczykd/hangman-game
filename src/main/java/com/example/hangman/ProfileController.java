@@ -146,7 +146,5 @@ public class ProfileController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        System.out.println("Automatyczne wypelnianie danych pobranych z bazy dla uzytkownika:  \"" + playerlogin + "\"");
     }
 }

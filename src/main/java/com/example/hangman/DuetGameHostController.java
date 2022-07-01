@@ -28,7 +28,7 @@ public class DuetGameHostController {
         stage.setTitle("Wisielec - Tworzenie Gry Duet");
         stage.setScene(scene);
         stage.show();
-        System.out.println("Wybór trybu duet dla hosta: \"" + playerlogin + "\"");
+        System.out.println("Wybor trybu duet dla hosta: \"" + playerlogin + "\"");
     }
 
     @FXML private ImageView exitImage;
@@ -39,7 +39,7 @@ public class DuetGameHostController {
 
     @FXML
     public void beginNormalGame() {
-        System.out.println("Hostuję gre duet w trybie NORMAL. Host: \"" + playerlogin + "\"");
+        System.out.println("Hostuje gre duet w trybie NORMAL. Host: \"" + playerlogin + "\"");
 
         //  TUTAJ ZACZĄĆ GRE DUET - NORMAL
 
@@ -49,7 +49,7 @@ public class DuetGameHostController {
 
     @FXML
     public void beginSpeedrunGame() {
-        System.out.println("Hostuję gre duet w trybie SPEEDRUN. Host: \"" + playerlogin + "\"");
+        System.out.println("Hostuje gre duet w trybie SPEEDRUN. Host: \"" + playerlogin + "\"");
 
         //  TUTAJ ZACZĄĆ GRE DUET - SPEEDRUN
 

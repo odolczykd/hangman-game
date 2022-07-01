@@ -30,7 +30,7 @@ public class DuetGameTypeController {
         stage.setTitle("Wisielec - Gra Duet");
         stage.setScene(scene);
         stage.show();
-        System.out.println("Wybór trybu duet dla użytkownika \"" + playerlogin + "\"");
+        System.out.println("Wybor trybu duet dla uzytkownika \"" + playerlogin + "\"");
     }
 
     @FXML private ImageView exitImage;
@@ -43,7 +43,7 @@ public class DuetGameTypeController {
 
     @FXML
     public void hostDuet() throws IOException {
-        System.out.println("Hostuję grę duet. host: \"" + playerlogin + "\"");
+        System.out.println("Hostuje gre duet. Host: \"" + playerlogin + "\"");
 
         //  TUTAJ ZACZĄĆ GRE - NORMAL
         DuetGameHostController dghc = new DuetGameHostController(playerlogin);
@@ -76,7 +76,7 @@ public class DuetGameTypeController {
             //else próba połączenia else błąd
 
             // otwórz okienko z grą
-            System.out.println("Zaczynam grę duet. Dołączający: \"" + playerlogin + "\". Hostname: \"" + hostnameField.getText() + "\"");
+            System.out.println("Zaczynam gre duet. Dolaczajacy: \"" + playerlogin + "\". Hostname: \"" + hostnameField.getText() + "\"");
 
         Stage stage = (Stage) joinGameImage.getScene().getWindow();
         stage.close();

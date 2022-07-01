@@ -117,50 +117,27 @@ public class DbConnection {
     }
 
     public String[] getTopNormalScore() throws SQLException {
-        String[] score = new String[7];
-        // 1,2 i 3 miejsce w formie "nick (punkty)", a 4 i 5 miejsce w formie osobnych String'ów na login i punktację
+        String[] score = new String[5];
 
         rset = stmt.executeQuery("SELECT loginUzytk, COUNT(idHasla) AS pkt FROM RozwiazaneHasla GROUP BY loginUzytk ORDER BY pkt DESC LIMIT 5;");
 
         //zliczanie wyniku według argumentu (n-te miejsce)
         for(int i=0; i<5; i++){
             rset.next();
-
-            if(i < 3){ // pierwsze 3 miejsca jako połączony login z wynikiem
-                score[i] = rset.getString(1) + " (" + rset.getString(2) + ")";
-            }
-            else if(i == 3){ // 4 miejsce do osobnych String'ów
-                score[3] = rset.getString(1);
-                score[4] = rset.getString(2);
-            }
-            else { // 5 miejsce również do osobnego String'a
-                score[5] = rset.getString(1);
-                score[6] = rset.getString(2);
-            }
+            score[i] = rset.getString(1) + " (" + rset.getString(2) + ")";
         }
         return score;
 
     }
 
     public String[] getTopSpeedrunScore() throws SQLException {
-        String[] score = new String[7]; // 1,2 i 3 miejsce w formie "nick (punkty)", a 4 i 5 miejsce w formie osobnych String'ów na login i punktację
+        String[] score = new String[5];
         rset = stmt.executeQuery("SELECT loginUzytk, liczbaPkt FROM Ranking ORDER BY liczbaPkt DESC LIMIT 5;");
 
-        //zliczanie wyniku według argumentu (n-te miejsce) i zapisanie w odpowiedniej kolejności i składni do wynikowej tablicy String'ów
+        //zliczanie wyniku według argumentu (n-te miejsce)
         for(int i=0; i<5; i++){
             rset.next();
-
-            if(i < 3){ // pierwsze 3 miejsca jako połączony login z wynikiem
-                score[i] = rset.getString(1) + " (" + rset.getString(2) + ")";
-            }
-            else if(i == 3){ // 4 miejsce do osobnych String'ów
-                score[3] = rset.getString(1);
-                score[4] = rset.getString(2);
-            }
-            else { // 5 miejsce również do osobnego String'a
-                score[5] = rset.getString(1);
-                score[6] = rset.getString(2);
-            }
+            score[i] = rset.getString(1) + " (" + rset.getString(2) + ")";
         }
         return score;
     }

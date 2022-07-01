@@ -26,9 +26,8 @@ public class RankController implements Initializable {
     @FXML private Label secondNickname;
     @FXML private Label thirdNickname;
     @FXML private Label fourthNickname;
-    @FXML private Label fourthPoints;
     @FXML private Label fifthNickname;
-    @FXML private Label fifthPoints;
+    @FXML private Label descriptionLabel;
 
     public RankController(String login){
         playerlogin = login;
@@ -44,7 +43,7 @@ public class RankController implements Initializable {
         stage.setTitle("Wisielec - Ranking");
         stage.setScene(scene);
         stage.show();
-        System.out.println("Ranking normalny dla uzytkownika \"" + playerlogin + "\"");
+        System.out.println("Ranking (zalogowany: \"" + playerlogin + "\")");
     }
 
 
@@ -79,9 +78,7 @@ public class RankController implements Initializable {
         secondNickname.setText(scores[1]);
         thirdNickname.setText(scores[2]);
         fourthNickname.setText(scores[3]);
-        fourthPoints.setText(scores[4]);
-        fifthNickname.setText(scores[5]);
-        fifthPoints.setText(scores[6]);
+        fifthNickname.setText(scores[4]);
 
         dbc.closeConnection();
     }
@@ -94,11 +91,21 @@ public class RankController implements Initializable {
         secondNickname.setText(scores[1]);
         thirdNickname.setText(scores[2]);
         fourthNickname.setText(scores[3]);
-        fourthPoints.setText(scores[4]);
-        fifthNickname.setText(scores[5]);
-        fifthPoints.setText(scores[6]);
+        fifthNickname.setText(scores[4]);
 
         dbc.closeConnection();
+    }
+
+    public void showNormalDescription(){
+        descriptionLabel.setText("Top 5 graczy z rozwiązaną największą liczbą haseł w trybie normalnym");
+    }
+
+    public void showSpeedrunDescription(){
+        descriptionLabel.setText("Top 5 graczy z najwyższym wynikiem uzyskanym w trybie szybkim");
+    }
+
+    public void hideDescription(){
+        descriptionLabel.setText("");
     }
 
     @Override
@@ -108,6 +115,5 @@ public class RankController implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Automatyczne wypelnianie rankingu pobranego z bazy danych, uzytkownik:  \"" + playerlogin + "\"");
     }
 }
