@@ -34,10 +34,10 @@
                      <children>
                         <Label fx:id="firstNickname" alignment="CENTER" text="&lt;brak&gt;">
                            <font>
-                              <Font name="System Bold" size="16.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <ImageView fitHeight="150.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="141.0" fitWidth="132.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@img/rankFirstPlace.png" />
                            </image>
@@ -46,18 +46,18 @@
                   </VBox>
                </children>
             </HBox>
-            <Pane prefWidth="735.0">
+            <Pane prefHeight="150.0" prefWidth="735.0">
                <children>
-                  <HBox alignment="TOP_CENTER" layoutX="88.0" layoutY="-92.0" prefHeight="100.0" prefWidth="200.0" spacing="300.0">
+                  <HBox alignment="TOP_CENTER" layoutX="88.0" layoutY="-92.0" prefHeight="162.0" prefWidth="545.0" spacing="300.0">
                      <children>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
                            <children>
                               <Label fx:id="secondNickname" alignment="CENTER" text="&lt;brak&gt;">
                                  <font>
-                                    <Font name="System Bold" size="16.0" />
+                                    <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <ImageView fitHeight="130.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="124.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@img/rankSecondPlace.png" />
                                  </image>
@@ -68,10 +68,10 @@
                            <children>
                               <Label fx:id="thirdNickname" alignment="CENTER" text="&lt;brak&gt;">
                                  <font>
-                                    <Font name="System Bold" size="16.0" />
+                                    <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <ImageView fitHeight="130.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="122.0" fitWidth="124.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@img/rankThirdPlace.png" />
                                  </image>
@@ -103,7 +103,7 @@
                         </Label>
                      </children>
                   </VBox>
-                  <VBox prefHeight="182.0" prefWidth="175.0" spacing="20.0">
+                  <VBox prefHeight="166.0" prefWidth="274.0" spacing="20.0">
                      <children>
                         <Label text="Nazwa użytkownika" textAlignment="CENTER">
                            <font>
@@ -120,14 +120,14 @@
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                        <HBox alignment="CENTER" prefHeight="30.0" prefWidth="220.0" spacing="30.0">
                            <children>
-                              <ToggleButton fx:id="normalRankingButton" mnemonicParsing="false" onAction="#openNormalRanking" prefHeight="25.0" prefWidth="84.0" selected="true" text="Normalny">
+                              <ToggleButton fx:id="normalRankingButton" mnemonicParsing="false" onAction="#openNormalRanking" prefHeight="25.0" prefWidth="90.0" selected="true" text="Tryb zwykły">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="grupa" />
                                  </toggleGroup>
                               </ToggleButton>
-                              <ToggleButton fx:id="speedrunRankingButton" mnemonicParsing="false" onAction="#openSpeedrunRanking" prefHeight="25.0" prefWidth="84.0" text="Szybki" toggleGroup="$grupa" />
+                              <ToggleButton fx:id="speedrunRankingButton" mnemonicParsing="false" onAction="#openSpeedrunRanking" prefHeight="25.0" prefWidth="90.0" text="Tryb szybki" toggleGroup="$grupa" />
                            </children>
                         </HBox>
                      </children>

@@ -27,7 +27,7 @@
                      <children>
                         <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/infoButton.png" />
+                              <Image url="@img/Dawid.png" />
                            </image>
                            <VBox.margin>
                               <Insets bottom="5.0" left="24.0" right="24.0" />
@@ -44,7 +44,7 @@
                      <children>
                         <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/infoButton.png" />
+                              <Image url="@img/Osik.png" />
                            </image>
                            <VBox.margin>
                               <Insets bottom="5.0" left="24.0" right="24.0" />
@@ -61,7 +61,7 @@
                      <children>
                         <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/infoButton.png" />
+                              <Image url="@img/Konrad.png" />
                            </image>
                            <VBox.margin>
                               <Insets bottom="5.0" left="24.0" right="24.0" />
