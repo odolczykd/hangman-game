@@ -38,11 +38,11 @@ public class SoloGameStartController {
     @FXML private Label modeDescriptionLabel;
 
     @FXML
-    public void beginNormalGame() {
+    public void beginNormalGame() throws IOException {
         System.out.println("Zaczynam gre solo w trybie NORMAL dla gracza \"" + playerlogin + "\"");
 
-        //  TUTAJ ZACZĄĆ GRE SOLO - NORMAL
-
+        SoloNormalGameController sngc = new SoloNormalGameController(playerlogin);
+        sngc.openWindow();
         Stage stage = (Stage) normalModeImage.getScene().getWindow();
         stage.close();
     }

@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
+import java.util.Random;
 
 public class DbConnection {
     Connection c;
@@ -162,6 +163,21 @@ public class DbConnection {
             output.add(new Phrase(rset.getInt(1),rset.getString(2),rset.getString(3)));
         }
         return output;
+    }
+
+    public String[] getPhrase() throws SQLException {
+        String[] res = new String[2];   // res[0] - tresc, res[1] - kategoria
+
+        Random r = new Random();
+        int id = 11;/*r.nextInt(100);*/ // + kontrola czy hasło nie jest już rozwiązane i czy dobrze wylosowało (czy takie id istnieje)
+
+        rset = stmt.executeQuery("SELECT trescHasla, kategoriaHasla FROM Hasla WHERE idHasla="+id+";");
+        rset.next();
+
+        res[0] = rset.getString(1).toUpperCase();
+        res[1] = rset.getString(2).toUpperCase();
+
+        return res;
     }
 
     public void closeConnection() throws SQLException {
