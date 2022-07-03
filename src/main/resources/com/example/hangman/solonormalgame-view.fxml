@@ -11,14 +11,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="500.0" minWidth="735.0" prefHeight="500.0" prefWidth="735.0" style="-fx-background-color: #555555;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hangman.SoloNormalGameController">
+<AnchorPane minHeight="500.0" minWidth="735.0" prefHeight="500.0" prefWidth="735.0" style="-fx-background-color: #565656;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hangman.SoloNormalGameController">
     <children>
       <ImageView fitHeight="119.0" fitWidth="500.0" layoutX="140.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@img/hangmanLogoSoloNormalGame.png" />
          </image>
       </ImageView>
-      <Label fx:id="phraseLabel" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutY="168.0" maxWidth="735.0" minWidth="735.0" prefWidth="735.0" text="BEZ PRACY NIE MA KOŁACZY" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="phraseLabel" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutY="168.0" maxWidth="735.0" minWidth="735.0" prefWidth="735.0" text="&lt;haslo&gt;" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="System Bold" size="28.0" />
          </font>
@@ -30,7 +30,7 @@
       </ImageView>
       <AnchorPane layoutX="385.0" layoutY="233.0" prefHeight="187.0" prefWidth="300.0">
          <children>
-            <TextField fx:id="letterField" layoutX="134.0" layoutY="12.0" prefHeight="30.0" prefWidth="30.0">
+            <TextField fx:id="letterField" alignment="CENTER" layoutX="134.0" layoutY="12.0" prefHeight="30.0" prefWidth="30.0" style="-fx-alignment: center;">
                <font>
                   <Font size="14.0" />
                </font>
@@ -87,7 +87,7 @@
                   <Insets bottom="7.0" right="7.0" />
               </padding>
           </HBox>
-      <Label fx:id="categoryLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="139.0" maxWidth="735.0" minWidth="735.0" prefWidth="735.0" text="Kategoria:" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="categoryLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="139.0" maxWidth="735.0" minWidth="735.0" prefWidth="735.0" text="Kategoria: &lt;tresc&gt;" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

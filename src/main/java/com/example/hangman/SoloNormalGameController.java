@@ -70,9 +70,8 @@ public class SoloNormalGameController implements Initializable {
             letterField.setText(newValue.toUpperCase());
         });
 
-        DbConnection dbc = null;
         try {
-            dbc = new DbConnection();
+            DbConnection dbc = new DbConnection();
             phrase = dbc.getPhrase();
             phraseLabel.setText(hidePhrase(phrase[0]));
             categoryLabel.setText("Kategoria: " + phrase[1]);

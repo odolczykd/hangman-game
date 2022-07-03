@@ -169,7 +169,7 @@ public class DbConnection {
         String[] res = new String[2];   // res[0] - tresc, res[1] - kategoria
 
         Random r = new Random();
-        int id = 11;/*r.nextInt(100);*/ // + kontrola czy hasło nie jest już rozwiązane i czy dobrze wylosowało (czy takie id istnieje)
+        int id = r.nextInt(100); // + kontrola czy hasło nie jest już rozwiązane i czy dobrze wylosowało (czy takie id istnieje)
 
         rset = stmt.executeQuery("SELECT trescHasla, kategoriaHasla FROM Hasla WHERE idHasla="+id+";");
         rset.next();

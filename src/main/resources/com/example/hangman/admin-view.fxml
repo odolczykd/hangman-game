@@ -133,17 +133,17 @@
                            </toggleGroup>
                         </ToggleButton>
                         <ToggleButton fx:id="phrasesToggleButton" layoutX="416.0" layoutY="2.0" mnemonicParsing="false" onAction="#showPhrasesTable" prefHeight="25.0" prefWidth="130.0" text="Hasła do gry" toggleGroup="$editType" />
-                        <ImageView fx:id="addRecordImage" fitHeight="32.0" fitWidth="32.0" layoutX="47.0" layoutY="-2.0" onMouseClicked="#addRecord" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                        <ImageView fx:id="addRecordImage" fitHeight="32.0" fitWidth="32.0" layoutX="14.0" layoutY="-2.0" onMouseClicked="#addRecord" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                            <image>
                               <Image url="@img/adminAddButton.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="removeRecordImage" fitHeight="32.0" fitWidth="32.0" layoutX="89.0" layoutY="-2.0" onMouseClicked="#removeRecord" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                        <ImageView fx:id="removeRecordImage" fitHeight="32.0" fitWidth="32.0" layoutX="56.0" layoutY="-2.0" onMouseClicked="#removeRecord" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                            <image>
                               <Image url="@img/adminRemoveButton.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="refreshTablesImage" fitHeight="32.0" fitWidth="32.0" layoutX="131.0" layoutY="-2.0" onMouseClicked="#refreshTables" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                        <ImageView fx:id="refreshTablesImage" fitHeight="32.0" fitWidth="32.0" layoutX="98.0" layoutY="-2.0" onMouseClicked="#refreshTables" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                            <image>
                               <Image url="@img/adminRefreshButton.png" />
                            </image>
