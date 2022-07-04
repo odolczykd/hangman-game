@@ -4,12 +4,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.Objects;
 
 public class LoginController {
 
@@ -25,6 +27,9 @@ public class LoginController {
         FXMLLoader fxmlLoader = new FXMLLoader(HangmanApplication.class.getResource("loginview.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 350, 330);
         Stage stage = new Stage();
+        stage.setResizable(false);
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/icon.png")));
+        stage.getIcons().add(image);
         stage.setTitle("Wisielec - Logowanie");
         stage.setScene(scene);
         stage.show();

@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class DbConnection {
@@ -165,19 +167,77 @@ public class DbConnection {
         return output;
     }
 
-    public String[] getPhrase() throws SQLException {
-        String[] res = new String[2];   // res[0] - tresc, res[1] - kategoria
+    public String[] getNormalPhrase(String login) throws SQLException {
 
-        Random r = new Random();
-        int id = r.nextInt(100); // + kontrola czy hasło nie jest już rozwiązane i czy dobrze wylosowało (czy takie id istnieje)
+        String[] res = new String[3];   // res[0] - tresc, res[1] - kategoria
+        List<Integer> unusedPhrases = new ArrayList<>();
 
-        rset = stmt.executeQuery("SELECT trescHasla, kategoriaHasla FROM Hasla WHERE idHasla="+id+";");
-        rset.next();
 
-        res[0] = rset.getString(1).toUpperCase();
-        res[1] = rset.getString(2).toUpperCase();
+        rset = stmt.executeQuery("SELECT idHasla FROM Hasla WHERE idHasla NOT IN (SELECT idHasla FROM RozwiazaneHasla WHERE loginUzytk='"+ login +"');");
+        while(rset.next()){
+            unusedPhrases.add(rset.getInt(1));
+        }
 
+        if(unusedPhrases.size()>0){
+            Random r = new Random();
+            int id = r.nextInt(0, unusedPhrases.size()); // losowanie nierozwiązanego hasła dla użytkownika
+            rset = stmt.executeQuery("SELECT trescHasla, kategoriaHasla FROM Hasla WHERE idHasla=" + unusedPhrases.get(id) + ";");
+            rset.next();
+            res[0] = rset.getString(1).toUpperCase();
+            res[1] = rset.getString(2).toUpperCase();
+            res[2] = Integer.toString(unusedPhrases.get(id));
+        }
+        else {
+            res[0] = "";
+            res[1] = "";
+            res[2] = "";
+        }
         return res;
+    }
+
+    public String[] getSpeedrunPhrase(String login) throws SQLException {
+
+        String[] res = new String[3];   // res[0] - tresc, res[1] - kategoria
+        List<Integer> phrases = new ArrayList<>();
+
+
+        rset = stmt.executeQuery("SELECT idHasla FROM Hasla WHERE idHasla;");
+        while(rset.next()){
+            phrases.add(rset.getInt(1));
+        }
+
+        if(phrases.size()>0){
+            Random r = new Random();
+            int id = r.nextInt(0, phrases.size()); // losowanie nierozwiązanego hasła dla użytkownika
+            rset = stmt.executeQuery("SELECT trescHasla, kategoriaHasla FROM Hasla WHERE idHasla="+ phrases.get(id) +";");
+            rset.next();
+            res[0] = rset.getString(1).toUpperCase();
+            res[1] = rset.getString(2).toUpperCase();
+            res[2] = Integer.toString(phrases.get(id));
+        }
+        else {
+            res[0] = "";
+            res[1] = "";
+            res[2] = "";
+        }
+        return res;
+    }
+
+    public void addNormalPoint(String login, int id) throws SQLException {
+        stmt.executeUpdate("INSERT INTO RozwiazaneHasla(loginUzytk, idHasla) VALUES ('" + login + "',"+id+");");
+    }
+
+    public boolean updateSpeedrunScore(String login, int score) throws SQLException {
+        rset = stmt.executeQuery("SELECT liczbaPkt FROM Ranking WHERE loginUzytk='"+ login +"';");
+        rset.next();
+        int oldScore = rset.getInt(1);
+
+        if (score > oldScore){
+            stmt.executeUpdate("UPDATE Ranking SET liczbaPkt=" + score + " WHERE loginUzytk='" + login + "';");
+            return true;
+        }
+        else return false;
+
     }
 
     public void closeConnection() throws SQLException {

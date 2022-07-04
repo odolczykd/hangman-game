@@ -5,11 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 
 public class DuetGameTypeController {
@@ -27,6 +29,9 @@ public class DuetGameTypeController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("duetgametype-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 735, 680);
         Stage stage = new Stage();
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/icon.png")));
+        stage.getIcons().add(image);
+        stage.setResizable(false);
         stage.setTitle("Wisielec - Gra Duet");
         stage.setScene(scene);
         stage.show();
