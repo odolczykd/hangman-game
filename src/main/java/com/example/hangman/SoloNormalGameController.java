@@ -86,7 +86,7 @@ public class SoloNormalGameController implements Initializable {
                             incorrectUsedLettersLabel.setText(incorrectUsedLettersLabel.getText() + " " + c);
 
                             if((howManyMissed++) < 8){
-                                Image image = new Image(getClass().getResourceAsStream("img/s"+howManyMissed+".gif"));
+                                Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/s" + howManyMissed + ".gif")));
                                 hangmanImage.setImage(image);
                             }
                         }

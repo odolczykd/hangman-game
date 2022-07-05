@@ -52,12 +52,12 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="correctLettersLabel" layoutX="15.0" layoutY="94.0" prefHeight="26.0" prefWidth="270.0" text="zielone" textFill="#00a316" wrapText="true">
+            <Label fx:id="correctLettersLabel" layoutX="15.0" layoutY="94.0" prefHeight="26.0" prefWidth="270.0" textFill="#00a316" wrapText="true">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Label fx:id="incorrectUsedLettersLabel" layoutX="14.0" layoutY="133.0" prefHeight="26.0" prefWidth="270.0" text="czerwone" textFill="#dd0000" wrapText="true">
+            <Label fx:id="incorrectUsedLettersLabel" layoutX="14.0" layoutY="133.0" prefHeight="26.0" prefWidth="270.0" textFill="#dd0000" wrapText="true">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>

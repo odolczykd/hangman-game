@@ -169,9 +169,8 @@ public class DbConnection {
 
     public String[] getNormalPhrase(String login) throws SQLException {
 
-        String[] res = new String[3];   // res[0] - tresc, res[1] - kategoria
+        String[] res = new String[3];   // res[0] - tresc, res[1] - kategoria, res[2] - id
         List<Integer> unusedPhrases = new ArrayList<>();
-
 
         rset = stmt.executeQuery("SELECT idHasla FROM Hasla WHERE idHasla NOT IN (SELECT idHasla FROM RozwiazaneHasla WHERE loginUzytk='"+ login +"');");
         while(rset.next()){
