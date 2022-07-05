@@ -23,6 +23,9 @@ public class MainMenuController implements Initializable {
     @FXML private ImageView exitImage;
     @FXML private ImageView logoutImage;
     @FXML private ImageView soloGameImage;
+    private Stage infoStage = new Stage(); // do zamknięcia poprzedniego okienka 'info' przy ponownej próbie jego otwarcia
+
+    private static boolean userLabelAntiBug = false; // okienko info wykorzystuje ten sam controller
 
     public MainMenuController(String login){
         playerlogin = login;
@@ -82,12 +85,18 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void onInfoImageClick() throws IOException {
+        if (infoStage.isShowing())infoStage.close();
+        userLabelAntiBug = true;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("info-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 340);
-        Stage stage = new Stage();
-        stage.setTitle("Wisielec - Twórcy");
-        stage.setScene(scene);
-        stage.show();
+        Scene infoScene = new Scene(fxmlLoader.load(), 600, 340);
+        infoStage = new Stage();
+        infoStage.setResizable(false);
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/icon.png")));
+        infoStage.getIcons().add(image);
+        infoStage.setTitle("Wisielec - Twórcy");
+        infoStage.setScene(infoScene);
+        infoStage.show();
+        userLabelAntiBug = false;
     }
 
     @FXML
@@ -106,6 +115,9 @@ public class MainMenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        userLabel.setText("Witaj, " + playerlogin + "!");
+        // przy wyświetlaniu menu pokazuje się informacja o zalogowanym użytkowniku
+        // następnie może zostać wyświetlone okno info-view z tego samego kontrolera
+        // infoview używa więc tej funkcji przy starcie stąd zabezpieczenie
+        if(!userLabelAntiBug)userLabel.setText("Witaj, " + playerlogin + "!");
     }
 }
