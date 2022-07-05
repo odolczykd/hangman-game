@@ -195,10 +195,11 @@ public class DbConnection {
         return res;
     }
 
-    public String[] getSpeedrunPhrase(String login) throws SQLException {
+    public String[] getSpeedrunPhrase(List<Integer> usedPhrases) throws SQLException {
 
         String[] res = new String[3];   // res[0] - tresc, res[1] - kategoria
         List<Integer> phrases = new ArrayList<>();
+        List<Integer> unusedPhrases = new ArrayList<>();
 
 
         rset = stmt.executeQuery("SELECT idHasla FROM Hasla WHERE idHasla;");
@@ -206,14 +207,21 @@ public class DbConnection {
             phrases.add(rset.getInt(1));
         }
 
+
+        for (Integer id: phrases) {
+            if(!usedPhrases.contains(id)){
+                unusedPhrases.add(id);
+            }
+        }
+
         if(phrases.size()>0){
             Random r = new Random();
-            int id = r.nextInt(0, phrases.size()); // losowanie nierozwiązanego hasła dla użytkownika
-            rset = stmt.executeQuery("SELECT trescHasla, kategoriaHasla FROM Hasla WHERE idHasla="+ phrases.get(id) +";");
+            int id = r.nextInt(0, unusedPhrases.size()); // losowanie nierozwiązanego hasła dla użytkownika
+            rset = stmt.executeQuery("SELECT trescHasla, kategoriaHasla FROM Hasla WHERE idHasla="+ unusedPhrases.get(id) +";");
             rset.next();
             res[0] = rset.getString(1).toUpperCase();
             res[1] = rset.getString(2).toUpperCase();
-            res[2] = Integer.toString(phrases.get(id));
+            res[2] = Integer.toString(unusedPhrases.get(id));
         }
         else {
             res[0] = "";

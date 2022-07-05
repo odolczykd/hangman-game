@@ -35,6 +35,7 @@ public class SoloSpeedrunGameController implements Initializable {
 
     private String[] phrase;
     private int phraseId;
+    private List<Integer> usedPhrases = new ArrayList<>();
     private List<Character> usedLetters = new ArrayList<>();
     private int howManyMissed = 0;
     private int scoreCounter = 0;
@@ -214,9 +215,10 @@ public class SoloSpeedrunGameController implements Initializable {
 
     public void randomizePhrase() throws SQLException {
         DbConnection dbc = new DbConnection();
-        phrase = dbc.getSpeedrunPhrase(playerlogin);
+        phrase = dbc.getSpeedrunPhrase(usedPhrases);
 
             phraseId = Integer.parseInt(phrase[2]);
+            usedPhrases.add(Integer.parseInt(phrase[2]));
             phraseLabel.setText(hidePhrase(phrase[0]));
             categoryLabel.setText("Kategoria: " + phrase[1]);
 
