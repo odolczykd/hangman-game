@@ -126,11 +126,7 @@ public class SoloNormalGameController implements Initializable {
             phraseLabel.setText(phrase[0]);
         }
         else return;
-
     }
-
-
-
 
     public String hidePhrase(String phrase){
         String hidden = "";

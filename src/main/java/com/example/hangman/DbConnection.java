@@ -98,7 +98,6 @@ public class DbConnection {
     }
 
     public String getUserDescription(String login) throws SQLException {
-
         rset = stmt.executeQuery("SELECT opisUzytk FROM Uzytkownicy WHERE loginUzytk = '" + login + "';");
         rset.next();
 
@@ -130,7 +129,6 @@ public class DbConnection {
             score[i] = rset.getString(1) + " (" + rset.getString(2) + ")";
         }
         return score;
-
     }
 
     public String[] getTopSpeedrunScore() throws SQLException {
@@ -200,12 +198,10 @@ public class DbConnection {
         List<Integer> phrases = new ArrayList<>();
         List<Integer> unusedPhrases = new ArrayList<>();
 
-
         rset = stmt.executeQuery("SELECT idHasla FROM Hasla WHERE idHasla;");
         while(rset.next()){
             phrases.add(rset.getInt(1));
         }
-
 
         for (Integer id: phrases) {
             if(!usedPhrases.contains(id)){
@@ -244,7 +240,6 @@ public class DbConnection {
             return true;
         }
         else return false;
-
     }
 
     public void closeConnection() throws SQLException {

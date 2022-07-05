@@ -141,20 +141,20 @@ public class AdminController implements Initializable {
 
     @FXML
     public void adminAddUser() throws SQLException {
-            // wprowadzenie danych do bazy
-            //blokada wprowadzenia danych z pustym rekordem
-            if(newLoginField.getText().length() != 0 && newPasswordField.getText().length() != 0 && newDescriptionField.getText().length() != 0){
-                DbConnection dbc = new DbConnection();
-                dbc.addUser(newLoginField.getText(),newPasswordField.getText(),newDescriptionField.getText());
+        // wprowadzenie danych do bazy
+        //blokada wprowadzenia danych z pustym rekordem
+        if(newLoginField.getText().length() != 0 && newPasswordField.getText().length() != 0 && newDescriptionField.getText().length() != 0){
+            DbConnection dbc = new DbConnection();
+            dbc.addUser(newLoginField.getText(),newPasswordField.getText(),newDescriptionField.getText());
 
-                userList = dbc.getUsersList();
-                usersTable.setItems(userList);
+            userList = dbc.getUsersList();
+            usersTable.setItems(userList);
 
-                dbc.closeConnection();
-                newLoginField.setText("");
-                newPasswordField.setText("");
-                newDescriptionField.setText("");
-            }
+            dbc.closeConnection();
+            newLoginField.setText("");
+            newPasswordField.setText("");
+            newDescriptionField.setText("");
+        }
     }
 
     @FXML
@@ -246,7 +246,6 @@ public class AdminController implements Initializable {
         System.out.println("Panel administratora - login: \"" + adminLogin + "\"");
     }
 
-
     @FXML
     public void onExitImageClick(){
         Stage stage = (Stage) exitImage.getScene().getWindow();
@@ -280,11 +279,10 @@ public class AdminController implements Initializable {
             usersTable.setItems(userList);
             phraseList = dbc.getPhrasesList();
             phrasesTable.setItems(phraseList);
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        System.out.println("Automatyczne wypelnianie danych pobranych z bazy dla administratora:  \"" + adminLogin + "\"");
+        System.out.println("Automatyczne wypelnianie danych pobranych z bazy dla administratora: \"" + adminLogin + "\"");
     }
 }

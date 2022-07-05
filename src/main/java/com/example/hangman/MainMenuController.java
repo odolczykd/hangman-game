@@ -118,6 +118,6 @@ public class MainMenuController implements Initializable {
         // przy wyświetlaniu menu pokazuje się informacja o zalogowanym użytkowniku
         // następnie może zostać wyświetlone okno info-view z tego samego kontrolera
         // infoview używa więc tej funkcji przy starcie stąd zabezpieczenie
-        if(!userLabelAntiBug)userLabel.setText("Witaj, " + playerlogin + "!");
+        if(!userLabelAntiBug) userLabel.setText("Witaj, " + playerlogin + "!");
     }
 }

@@ -60,13 +60,8 @@ public class DuetGameTypeController {
 
     @FXML
     public void joinDuet() {
-        if(!hostnameBar.isVisible()){
-            hostnameBar.setVisible(true);
-        }
-        else {
-            hostnameField.setText("");
-        }
-
+        if(!hostnameBar.isVisible()) hostnameBar.setVisible(true);
+        else hostnameField.setText("");
     }
 
     @FXML
@@ -83,10 +78,9 @@ public class DuetGameTypeController {
             // otwórz okienko z grą
             System.out.println("Zaczynam gre duet. Dolaczajacy: \"" + playerlogin + "\". Hostname: \"" + hostnameField.getText() + "\"");
 
-        Stage stage = (Stage) joinGameImage.getScene().getWindow();
-        stage.close();
+            Stage stage = (Stage) joinGameImage.getScene().getWindow();
+            stage.close();
         }
-
     }
 
     @FXML

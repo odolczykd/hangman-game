@@ -98,5 +98,4 @@ public class DuetGameHostController {
         Stage stage = (Stage) logoutImage.getScene().getWindow();
         stage.close();
     }
-
 }

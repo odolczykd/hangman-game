@@ -76,7 +76,6 @@ public class LoginController {
                 }
             }
         }
-
     }
 
     @FXML
@@ -115,7 +114,6 @@ public class LoginController {
                         MainMenuController mmc = new MainMenuController(currentUser);
                         mmc.openWindow();
                     }
-
 
                 // zamykanie okna logowania
                     Stage stage = (Stage) errorLabel.getScene().getWindow();

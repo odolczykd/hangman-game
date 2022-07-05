@@ -51,7 +51,6 @@ public class RankController implements Initializable {
         System.out.println("Ranking (zalogowany: \"" + playerlogin + "\")");
     }
 
-
     @FXML
     public void onHomeImageClick() throws IOException {
         MainMenuController mmc = new MainMenuController(playerlogin);

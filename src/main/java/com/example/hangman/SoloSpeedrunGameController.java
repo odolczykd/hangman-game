@@ -31,6 +31,7 @@ public class SoloSpeedrunGameController implements Initializable {
 
     private static String playerlogin;
 
+    // scheduler do odliczania czasu w grze
     final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     private String[] phrase;
@@ -39,6 +40,7 @@ public class SoloSpeedrunGameController implements Initializable {
     private List<Character> usedLetters = new ArrayList<>();
     private int howManyMissed = 0;
     private int scoreCounter = 0;
+
     @FXML private ImageView exitImage, logoutImage, hangmanImage;
     @FXML private Label phraseLabel, categoryLabel, errorLabel, correctLettersLabel , incorrectUsedLettersLabel, winLabel, timerLabel, scoreCounterLabel;
     @FXML private TextField letterField;
@@ -55,6 +57,8 @@ public class SoloSpeedrunGameController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(HangmanApplication.class.getResource("solospeedrungame-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 735, 500);
         Stage stage = new Stage();
+
+        //zakończenie działania schedulera podczas zamknięcia okna
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
@@ -62,6 +66,7 @@ public class SoloSpeedrunGameController implements Initializable {
                 System.exit(0);
             }
         });
+
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/icon.png")));
         stage.getIcons().add(image);
         stage.setResizable(false);
@@ -122,10 +127,9 @@ public class SoloSpeedrunGameController implements Initializable {
     }
 
     public void checkWin() throws SQLException {
+
         // sprawdzenie czy hasło zawiera jeszcze jakieś niezgadnięte litery
-
-        if(!phraseLabel.getText().contains("-")){ // jeżeli nie ma niezgadniętych liter
-
+        if(!phraseLabel.getText().contains("-")){   // jeżeli nie ma niezgadniętych liter
             usedLetters.clear();
             correctLettersLabel.setText("");
             incorrectUsedLettersLabel.setText("");
@@ -143,15 +147,11 @@ public class SoloSpeedrunGameController implements Initializable {
             endRound();
             scheduler.shutdown();
         }
-        else return;
-
     }
-
-
-
 
     public String hidePhrase(String phrase){
         String hidden = "";
+
         for(int i=0; i<phrase.length(); i++){
             if (usedLetters.contains(phrase.charAt(i))) hidden += phrase.charAt(i);
             else if(Character.isLetter(phrase.charAt(i))) hidden += '-';
@@ -180,7 +180,6 @@ public class SoloSpeedrunGameController implements Initializable {
         letterBox.setVisible(false);
         menuReturnButton.setVisible(true);
     }
-
 
     @FXML
     public void onHomeImageClick() throws IOException {
@@ -212,7 +211,6 @@ public class SoloSpeedrunGameController implements Initializable {
         return ("0"+ min + ":" + (sec<10 ? ("0"+ sec) : sec));
     }
 
-
     public void randomizePhrase() throws SQLException {
         DbConnection dbc = new DbConnection();
         phrase = dbc.getSpeedrunPhrase(usedPhrases);
@@ -233,17 +231,13 @@ public class SoloSpeedrunGameController implements Initializable {
             letterField.setText(newValue.toUpperCase());
         });
 
-//////////////////////////////////
-
+        /*** Obsługa działania odliczania czasu w grze ***/
         final Runnable r = new Runnable() {
             int i = 121;
-
             @Override
             public void run() {
-
                 Platform.runLater(() -> { timerLabel.setText("Czas: " + timeConverter(i)); });
                 i--;
-
                 if(i==0){
                     Platform.runLater(() -> { timerLabel.setText("Czas: 00:00"); });
                     scheduler.shutdown();
@@ -256,9 +250,7 @@ public class SoloSpeedrunGameController implements Initializable {
             }
         };
         scheduler.scheduleAtFixedRate(r, 0, 1, TimeUnit.SECONDS);
-
-////////////////////////////////
-
+        /*** ========================================= ***/
 
         try {
             randomizePhrase();
