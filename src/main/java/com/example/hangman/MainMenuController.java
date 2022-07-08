@@ -17,24 +17,23 @@ import javafx.fxml.FXML;
 
 public class MainMenuController implements Initializable {
 
-    // zmienna przechowująca nick gracza logującego się do gry
-    private static String playerlogin;
+    private static String playerlogin; // zmienna przechowująca nick gracza logującego się do gry
+    private static boolean userLabelAntiBug = false; // okienko info wykorzystuje ten sam controller
+
     @FXML private Label userLabel;
     @FXML private ImageView exitImage;
     @FXML private ImageView logoutImage;
     @FXML private ImageView soloGameImage;
+
     private Stage infoStage = new Stage(); // do zamknięcia poprzedniego okienka 'info' przy ponownej próbie jego otwarcia
 
-    private static boolean userLabelAntiBug = false; // okienko info wykorzystuje ten sam controller
+    public MainMenuController() {}
 
     public MainMenuController(String login){
         playerlogin = login;
     }
 
-    public MainMenuController() {}
-
     public void openWindow() throws IOException {
-
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("mainmenu-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 735, 680);
         Stage stage = new Stage();
@@ -85,7 +84,7 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void onInfoImageClick() throws IOException {
-        if (infoStage.isShowing())infoStage.close();
+        if(infoStage.isShowing()) infoStage.close();
         userLabelAntiBug = true;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("info-view.fxml"));
         Scene infoScene = new Scene(fxmlLoader.load(), 600, 340);

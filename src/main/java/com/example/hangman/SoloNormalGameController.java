@@ -28,6 +28,7 @@ public class SoloNormalGameController implements Initializable {
     private int phraseId;
     private List<Character> usedLetters = new ArrayList<>();
     private int howManyMissed = 0;
+
     @FXML private ImageView exitImage, logoutImage, hangmanImage;
     @FXML private Label phraseLabel, categoryLabel, errorLabel, correctLettersLabel , incorrectUsedLettersLabel, winLabel;
     @FXML private TextField letterField;
@@ -55,26 +56,16 @@ public class SoloNormalGameController implements Initializable {
     @FXML
     public void checkLetter() throws SQLException {
         errorLabel.setText("");
-        if(letterField.getText().length() == 0){
-            errorLabel.setText("Wpisz literę!");
-        }
-        else if(letterField.getText().length()>1){
-            errorLabel.setText("Za dużo liter!");
-        }
+        if(letterField.getText().length() == 0){ errorLabel.setText("Wpisz literę!"); }
+        else if(letterField.getText().length()>1){ errorLabel.setText("Za dużo liter!"); }
         else {
             char letter = letterField.getText().charAt(0);
 
-            if(!Character.isLetter(letter)){
-                errorLabel.setText("Wpisz literę!");
-            }
+            if(!Character.isLetter(letter)){ errorLabel.setText("Wpisz literę!"); }
             else{
                 boolean isUnique = true;
-                for (char c : usedLetters) {
-                    if(c == letter) isUnique = false;
-                }
-                if(!isUnique){
-                    errorLabel.setText("Już użyta!");
-                }
+                for (char c : usedLetters) { if(c == letter) isUnique = false; }
+                if(!isUnique) { errorLabel.setText("Już użyta!"); }
                 else{
                     usedLetters.add(letter);
                     incorrectUsedLettersLabel.setText("");
@@ -106,7 +97,6 @@ public class SoloNormalGameController implements Initializable {
         // sprawdzenie czy hasło zawiera jeszcze jakieś niezgadnięte litery
 
         if(!phraseLabel.getText().contains("-")){ // jeżeli nie ma niezgadniętych liter
-
             DbConnection dbc = new DbConnection();
             dbc.addNormalPoint(playerlogin, phraseId);
             dbc.closeConnection();
@@ -115,7 +105,6 @@ public class SoloNormalGameController implements Initializable {
             winLabel.setVisible(true);
             letterBox.setVisible(false);
             menuReturnButton.setVisible(true);
-
         }
         else if(howManyMissed == 8){
             winLabel.setTextFill(Color.web("#ff0000"));
@@ -125,7 +114,6 @@ public class SoloNormalGameController implements Initializable {
             menuReturnButton.setVisible(true);
             phraseLabel.setText(phrase[0]);
         }
-        else return;
     }
 
     public String hidePhrase(String phrase){
@@ -135,7 +123,6 @@ public class SoloNormalGameController implements Initializable {
             else if(Character.isLetter(phrase.charAt(i))) hidden += '-';
             else hidden += phrase.charAt(i);
         }
-
         return hidden;
     }
 

@@ -16,14 +16,19 @@ public class SoloGameStartController {
 
     private static String playerlogin;
 
+    @FXML private ImageView exitImage;
+    @FXML private ImageView logoutImage;
+    @FXML private ImageView normalModeImage;
+    @FXML private ImageView speedrunModeImage;
+    @FXML private Label modeDescriptionLabel;
+
+    public SoloGameStartController() {}
+
     public SoloGameStartController(String login){
         playerlogin = login;
     }
 
-    public SoloGameStartController() {}
-
     public void openWindow() throws IOException {
-
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("sologamestart-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 735, 680);
         Stage stage = new Stage();
@@ -36,16 +41,9 @@ public class SoloGameStartController {
         System.out.println("Wybor trybu solo dla uzytkownika \"" + playerlogin + "\"");
     }
 
-    @FXML private ImageView exitImage;
-    @FXML private ImageView logoutImage;
-    @FXML private ImageView normalModeImage;
-    @FXML private ImageView speedrunModeImage;
-    @FXML private Label modeDescriptionLabel;
-
     @FXML
     public void beginNormalGame() throws IOException {
         System.out.println("Zaczynam gre solo w trybie NORMAL dla gracza \"" + playerlogin + "\"");
-
         SoloNormalGameController sngc = new SoloNormalGameController(playerlogin);
         sngc.openWindow();
         Stage stage = (Stage) normalModeImage.getScene().getWindow();
@@ -55,7 +53,6 @@ public class SoloGameStartController {
     @FXML
     public void beginSpeedrunGame() throws IOException {
         System.out.println("Zaczynam gre solo w trybie SPEEDRUN dla gracza \"" + playerlogin + "\"");
-
         SoloSpeedrunGameController ssgc = new SoloSpeedrunGameController(playerlogin);
         ssgc.openWindow();
         Stage stage = (Stage) speedrunModeImage.getScene().getWindow();

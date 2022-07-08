@@ -59,6 +59,20 @@ public class AdminController implements Initializable {
     private ObservableList<User> userList = FXCollections.observableArrayList();
     private ObservableList<Phrase> phraseList = FXCollections.observableArrayList();
 
+    public void openWindow() throws IOException {
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("admin-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 735, 680);
+        Stage stage = new Stage();
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/icon.png")));
+        stage.getIcons().add(image);
+        stage.setResizable(false);
+        stage.setTitle("Wisielec - Panel Administratora");
+        stage.setScene(scene);
+        stage.show();
+        System.out.println("Panel administratora - login: \"" + adminLogin + "\"");
+    }
+
     public void showUsersTable(){
         phrasesTable.setVisible(false);
         usersTable.setVisible(true);
@@ -231,19 +245,6 @@ public class AdminController implements Initializable {
 
         }
 
-    }
-    public void openWindow() throws IOException {
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("admin-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 735, 680);
-        Stage stage = new Stage();
-        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/icon.png")));
-        stage.getIcons().add(image);
-        stage.setResizable(false);
-        stage.setTitle("Wisielec - Panel Administratora");
-        stage.setScene(scene);
-        stage.show();
-        System.out.println("Panel administratora - login: \"" + adminLogin + "\"");
     }
 
     @FXML

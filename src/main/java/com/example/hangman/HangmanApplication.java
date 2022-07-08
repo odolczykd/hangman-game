@@ -20,7 +20,6 @@ public class HangmanApplication extends Application {
         stage.setResizable(false);
         stage.setTitle("Wisielec - Logowanie");
         stage.setScene(scene);
-
         stage.show();
     }
 

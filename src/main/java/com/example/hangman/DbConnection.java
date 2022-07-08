@@ -192,6 +192,33 @@ public class DbConnection {
         return res;
     }
 
+    public String[] getDuetPhrase() throws SQLException {
+
+        String[] res = new String[3];   // res[0] - tresc, res[1] - kategoria, res[2] - idHasla
+        List<Integer> phrases = new ArrayList<>();
+
+        rset = stmt.executeQuery("SELECT idHasla FROM Hasla WHERE idHasla;");
+        while(rset.next()){
+            phrases.add(rset.getInt(1));
+        }
+
+        if(phrases.size()>0){
+            Random r = new Random();
+            int id = r.nextInt(0, phrases.size()); // losowanie nierozwiązanego hasła dla użytkownika
+            rset = stmt.executeQuery("SELECT trescHasla, kategoriaHasla FROM Hasla WHERE idHasla="+ phrases.get(id) +";");
+            rset.next();
+            res[0] = rset.getString(1).toUpperCase();
+            res[1] = rset.getString(2).toUpperCase();
+            res[2] = Integer.toString(phrases.get(id));
+        }
+        else {
+            res[0] = "";
+            res[1] = "";
+            res[2] = "";
+        }
+        return res;
+    }
+
     public String[] getSpeedrunPhrase(List<Integer> usedPhrases) throws SQLException {
 
         String[] res = new String[3];   // res[0] - tresc, res[1] - kategoria
@@ -243,7 +270,6 @@ public class DbConnection {
     }
 
     public void closeConnection() throws SQLException {
-        //rset.close();
         stmt.close();
         c.close();
     }

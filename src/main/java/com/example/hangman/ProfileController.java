@@ -38,11 +38,11 @@ public class ProfileController implements Initializable {
     @FXML private PasswordField newPasswordField, newPasswordConfirmField;
     @FXML private TextArea newDescriptionTextArea;
 
+    public ProfileController() {}
+
     public ProfileController(String login){
         playerlogin = login;
     }
-
-    public ProfileController() {}
 
     public void openWindow() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("profile-view.fxml"));
@@ -138,7 +138,6 @@ public class ProfileController implements Initializable {
         Stage stage = (Stage) logoutImage.getScene().getWindow();
         stage.close();
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

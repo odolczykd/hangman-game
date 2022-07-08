@@ -79,26 +79,16 @@ public class SoloSpeedrunGameController implements Initializable {
     public void checkLetter() throws SQLException {
         errorLabel.setVisible(true);
         errorLabel.setText("");
-        if(letterField.getText().length() == 0){
-            errorLabel.setText("Wpisz literę!");
-        }
-        else if(letterField.getText().length()>1){
-            errorLabel.setText("Za dużo liter!");
-        }
+        if(letterField.getText().length() == 0){ errorLabel.setText("Wpisz literę!"); }
+        else if(letterField.getText().length()>1){ errorLabel.setText("Za dużo liter!"); }
         else {
             char letter = letterField.getText().charAt(0);
 
-            if(!Character.isLetter(letter)){
-                errorLabel.setText("Wpisz literę!");
-            }
+            if(!Character.isLetter(letter)){ errorLabel.setText("Wpisz literę!"); }
             else{
                 boolean isUnique = true;
-                for (char c : usedLetters) {
-                    if(c == letter) isUnique = false;
-                }
-                if(!isUnique){
-                    errorLabel.setText("Już użyta!");
-                }
+                for (char c : usedLetters) { if(c == letter) isUnique = false; }
+                if(!isUnique){ errorLabel.setText("Już użyta!"); }
                 else{
                     usedLetters.add(letter);
                     incorrectUsedLettersLabel.setText("");
@@ -151,17 +141,16 @@ public class SoloSpeedrunGameController implements Initializable {
 
     public String hidePhrase(String phrase){
         String hidden = "";
-
         for(int i=0; i<phrase.length(); i++){
             if (usedLetters.contains(phrase.charAt(i))) hidden += phrase.charAt(i);
             else if(Character.isLetter(phrase.charAt(i))) hidden += '-';
             else hidden += phrase.charAt(i);
         }
-
         return hidden;
     }
 
     public void endRound() throws SQLException {
+
         DbConnection dbc = new DbConnection();
         boolean isHighscoreBeated = dbc.updateSpeedrunScore(playerlogin, scoreCounter);
         dbc.closeConnection();
@@ -176,7 +165,6 @@ public class SoloSpeedrunGameController implements Initializable {
         }
 
         winLabel.setVisible(true);
-
         letterBox.setVisible(false);
         menuReturnButton.setVisible(true);
     }
@@ -215,10 +203,10 @@ public class SoloSpeedrunGameController implements Initializable {
         DbConnection dbc = new DbConnection();
         phrase = dbc.getSpeedrunPhrase(usedPhrases);
 
-            phraseId = Integer.parseInt(phrase[2]);
-            usedPhrases.add(Integer.parseInt(phrase[2]));
-            phraseLabel.setText(hidePhrase(phrase[0]));
-            categoryLabel.setText("Kategoria: " + phrase[1]);
+        phraseId = Integer.parseInt(phrase[2]);
+        usedPhrases.add(Integer.parseInt(phrase[2]));
+        phraseLabel.setText(hidePhrase(phrase[0]));
+        categoryLabel.setText("Kategoria: " + phrase[1]);
 
         dbc.closeConnection();
     }

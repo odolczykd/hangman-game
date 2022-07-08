@@ -31,11 +31,11 @@ public class RankController implements Initializable {
     @FXML private Label fifthNickname;
     @FXML private Label descriptionLabel;
 
+    public RankController() {}
+
     public RankController(String login){
         playerlogin = login;
     }
-
-    public RankController() {}
 
     public void openWindow() throws IOException {
 

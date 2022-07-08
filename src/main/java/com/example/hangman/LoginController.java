@@ -42,20 +42,13 @@ public class LoginController {
         String errorMessages = "";
         errorLabel.setTextFill(Color.web("#ff0000"));
 
-        if(loginField.getText().length() == 0){
-            errorMessages += "Wprowadź login!   ";
-        }
-        if(passwordField.getText().length() == 0){
-            errorMessages += "Wprowadź haslo!   ";
-        }
+        if(loginField.getText().length() == 0){ errorMessages += "Wprowadź login!   "; }
+        if(passwordField.getText().length() == 0){errorMessages += "Wprowadź haslo!   "; }
 
-        if(!descriptionBox.isVisible()){
-            descriptionBox.setVisible(true);
-        }
+        if(!descriptionBox.isVisible()){ descriptionBox.setVisible(true); }
         else {
-            if(descriptionField.getText().length() == 0){
-                errorMessages += "Wprowadź opis!";
-            }
+            if(descriptionField.getText().length() == 0){ errorMessages += "Wprowadź opis!"; }
+
             // wyswietlanie komunikatu o blednych danych uzytkownikowi
             errorLabel.setText(errorMessages);
 
@@ -85,12 +78,8 @@ public class LoginController {
         String errorMessages = "";
         errorLabel.setTextFill(Color.web("#ff0000"));
 
-        if(loginField.getText().length() == 0){
-            errorMessages += "Wprowadź login!   ";
-        }
-        if(passwordField.getText().length() == 0){
-            errorMessages += "Wprowadź haslo!   ";
-        }
+        if(loginField.getText().length() == 0){ errorMessages += "Wprowadź login!   "; }
+        if(passwordField.getText().length() == 0){ errorMessages += "Wprowadź haslo!   "; }
 
         // wyswietlanie komunikatu o blednych danych uzytkownikowi
         errorLabel.setText(errorMessages);
