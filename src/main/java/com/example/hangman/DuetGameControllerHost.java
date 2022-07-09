@@ -256,57 +256,52 @@ public class DuetGameControllerHost implements Initializable {
         actualPhrase = hidePhrase(phrase[0]);
         categoryLabel.setText("Kategoria: " + phrase[1]);
 
-        Thread t1 = new Thread(new Runnable() {
-            String st;
+        Thread t = new Thread(() -> {
+            try {
+                System.out.println("server is started");
 
-            @Override
-            public void run() {
-                try {
-                    System.out.println("server is started");
+                Platform.runLater(() -> playerInfoLabel.setText("Oczekiwanie na gracza..."));
+                System.out.println("Oczekiwanie na gracza");
 
-                    Platform.runLater(() -> playerInfoLabel.setText("Oczekiwanie na gracza..."));
-                    System.out.println("Oczekiwanie na gracza");
+                ServerSocket serverSocket = new ServerSocket(8080);
+                socket = serverSocket.accept();
 
-                    ServerSocket serverSocket = new ServerSocket(8080);
-                    socket = serverSocket.accept();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                teammateLogin = reader.readLine();
 
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    teammateLogin = reader.readLine();
+                Platform.runLater(() -> playerInfoLabel.setText("Gracz " + teammateLogin + " dołączył do gry!"));
+                System.out.println("Gracz " + teammateLogin + " dołączył do gry");
 
-                    Platform.runLater(() -> playerInfoLabel.setText("Gracz " + teammateLogin + " dołączył do gry!"));
-                    System.out.println("Gracz " + teammateLogin + " dołączył do gry");
+                // wysyłanie danych o grze drugiemu graczowi
+                JSONObject gameInfo = new JSONObject();
+                gameInfo.put("phraseId", phraseId);
+                gameInfo.put("phraseTitle", phrase[0]);
+                gameInfo.put("phraseCategory", phrase[1]);
+                gameInfo.put("hostLogin", playerlogin);
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                bw.write(gameInfo.toString());
+                bw.newLine();
+                bw.flush();
 
-                    // wysyłanie danych o grze drugiemu graczowi
-                    JSONObject gameInfo = new JSONObject();
-                    gameInfo.put("phraseId", phraseId);
-                    gameInfo.put("phraseTitle", phrase[0]);
-                    gameInfo.put("phraseCategory", phrase[1]);
-                    gameInfo.put("hostLogin", playerlogin);
-                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                    bw.write(gameInfo.toString());
-                    bw.newLine();
-                    bw.flush();
+                //odbieranie pierwszego ruchu
+                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                String t1 = br.readLine();
+                JSONObject json = new JSONObject(t1);
+                String teammateLetter = json.optString("letter");
 
-                    //odbieranie pierwszego ruchu
-                    BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    String t = br.readLine();
-                    JSONObject json = new JSONObject(t);
-                    String teammateLetter = json.optString("letter");
+                Platform.runLater(() -> {
+                    letterField.setDisable(false);
+                    System.out.println("Klient wybrał literę '" + teammateLetter + "'.");
+                });
 
-                    Platform.runLater(() -> {
-                        letterField.setDisable(false);
-                        System.out.println("Klient wybrał literę '" + teammateLetter + "'.");
-                    });
+                updateGame(String.valueOf(teammateLetter.charAt(0)));
 
-                    updateGame(String.valueOf(teammateLetter.charAt(0)));
-
-                } catch (IOException | SQLException e) {
-                    e.printStackTrace();
-                    System.out.println("[SERWER]: błąd połączenia!");
-                }
+            } catch (IOException | SQLException e) {
+                e.printStackTrace();
+                System.out.println("[SERWER]: błąd połączenia!");
             }
         });
-        t1.start();
+        t.start();
 
         // aby w fieldzie byly same wielkie litery
         letterField.textProperty().addListener((ov, oldValue, newValue) -> {

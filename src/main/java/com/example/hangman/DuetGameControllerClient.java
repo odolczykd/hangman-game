@@ -240,7 +240,7 @@ public class DuetGameControllerClient implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        Thread t1 = new Thread(() -> {
+        Thread t = new Thread(() -> {
             try {
                 socket = new Socket("127.0.0.1", 8080);
 
@@ -252,8 +252,8 @@ public class DuetGameControllerClient implements Initializable {
 
                 //odbieranie informacji o grze (id Hasła itp.)
                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                String t = br.readLine();
-                JSONObject gameInfo = new JSONObject(t);
+                String s = br.readLine();
+                JSONObject gameInfo = new JSONObject(s);
                 phraseId = gameInfo.optInt("phraseId");
                 phrase = new String[3];
                 phrase[0] = gameInfo.getString("phraseTitle");
@@ -272,7 +272,7 @@ public class DuetGameControllerClient implements Initializable {
                 e.printStackTrace();
             }
         });
-        t1.start();
+        t.start();
 
         // aby w fieldzie byly same wielkie litery
         letterField.textProperty().addListener((ov, oldValue, newValue) -> {
