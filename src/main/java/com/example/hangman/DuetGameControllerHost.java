@@ -36,7 +36,6 @@ public class DuetGameControllerHost implements Initializable {
     private List<Character> usedLetters = new ArrayList<>();
     private int howManyMissed = 0;
     private String lastLetter;
-
     @FXML private ImageView exitImage, logoutImage, hangmanImage;
     @FXML private Label phraseLabel, categoryLabel, errorLabel, correctLettersLabel, incorrectUsedLettersLabel, winLabel, playerInfoLabel;
     @FXML private TextField letterField;
@@ -44,7 +43,6 @@ public class DuetGameControllerHost implements Initializable {
     @FXML private Button menuReturnButton;
 
     public DuetGameControllerHost() {}
-
     public DuetGameControllerHost(String login) {
         playerlogin = login;
     }
@@ -73,7 +71,12 @@ public class DuetGameControllerHost implements Initializable {
             if (!Character.isLetter(letter)) { errorLabel.setText("Wpisz literę!"); }
             else {
                 boolean isUnique = true;
-                for (char c : usedLetters) { if (c == letter) isUnique = false; }
+                for (char c : usedLetters) {
+                    if (c == letter) {
+                        isUnique = false;
+                        break;
+                    }
+                }
                 if (!isUnique) { errorLabel.setText("Już użyta!"); }
                 else {
                     usedLetters.add(letter);
@@ -106,7 +109,6 @@ public class DuetGameControllerHost implements Initializable {
     public void updateGame(String teammateLetter) throws SQLException {
 
         char letter = teammateLetter.charAt(0);
-
         usedLetters.add(letter);
 
         Platform.runLater(() -> {
@@ -132,7 +134,6 @@ public class DuetGameControllerHost implements Initializable {
             }
         }
         Platform.runLater(() -> phraseLabel.setText(hidePhrase(phrase[0]))); // wstawienie odgadniętych liter w "puste pola"
-
         actualPhrase = hidePhrase(phrase[0]);
     }
 
@@ -145,6 +146,7 @@ public class DuetGameControllerHost implements Initializable {
 
                     JSONObject odp = new JSONObject();
                     odp.put("letter", lastLetter);
+                    System.out.println("[SERWER]: lastLetter = '"+lastLetter+"'");
 
                     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                     bw.write(odp.toString());
@@ -167,7 +169,7 @@ public class DuetGameControllerHost implements Initializable {
                     System.out.println("Klient wybrał literę '" + teammateLetter + "'.");
                     Platform.runLater(() -> playerInfoLabel.setText("Gracz " + teammateLogin + " wybrał literę '" + teammateLetter + "'."));
                 } catch (IOException | SQLException e) {
-                    e.printStackTrace();
+                    System.out.println("[SERWER]: Zakończono połączenie!");
                 }
             });
             t.start();
@@ -175,7 +177,6 @@ public class DuetGameControllerHost implements Initializable {
     }
 
     public void checkWin() throws SQLException {
-
 
         // sprawdzenie czy hasło zawiera jeszcze jakieś niezgadnięte litery
         Platform.runLater(() -> actualPhrase = phraseLabel.getText());
@@ -250,11 +251,11 @@ public class DuetGameControllerHost implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
         phraseId = Integer.parseInt(phrase[2]);
         phraseLabel.setText(hidePhrase(phrase[0]));
         actualPhrase = hidePhrase(phrase[0]);
         categoryLabel.setText("Kategoria: " + phrase[1]);
+
 
         Thread t = new Thread(() -> {
             try {
@@ -297,15 +298,12 @@ public class DuetGameControllerHost implements Initializable {
                 updateGame(String.valueOf(teammateLetter.charAt(0)));
 
             } catch (IOException | SQLException e) {
-                e.printStackTrace();
-                System.out.println("[SERWER]: błąd połączenia!");
+                System.out.println("[SERWER]: Zakończono połączenie!");
             }
         });
         t.start();
 
         // aby w fieldzie byly same wielkie litery
-        letterField.textProperty().addListener((ov, oldValue, newValue) -> {
-            letterField.setText(newValue.toUpperCase());
-        });
+        letterField.textProperty().addListener((ov, oldValue, newValue) -> letterField.setText(newValue.toUpperCase()));
     }
 }

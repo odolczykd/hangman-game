@@ -147,7 +147,7 @@ public class DbConnection {
         ObservableList<User> output = FXCollections.observableArrayList();
 
         // zapytanie zwracające dane potrzebne do uzupełnienia tabeli
-        rset = stmt.executeQuery("SELECT loginUzytk as mainLogin, hasloUzytk, opisUzytk, (SELECT COUNT(idHasla) FROM RozwiazaneHasla WHERE loginUzytk = mainLogin), (SELECT liczbaPkt FROM Ranking Where loginUzytk = mainLogin) FROM Uzytkownicy;");
+        rset = stmt.executeQuery("SELECT loginUzytk as mainLogin, hasloUzytk, opisUzytk, (SELECT COUNT(idHasla) FROM RozwiazaneHasla WHERE loginUzytk = mainLogin), (SELECT liczbaPkt FROM Ranking Where loginUzytk = mainLogin) FROM Uzytkownicy WHERE loginUzytk NOT LIKE 'admin';");
         while(rset.next()){
             output.add(new User(rset.getString(1),rset.getString(2),rset.getString(3),rset.getInt(4),rset.getInt(5)));
         }

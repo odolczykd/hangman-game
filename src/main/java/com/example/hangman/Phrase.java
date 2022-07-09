@@ -36,7 +36,6 @@ public class Phrase {
     public String getCategory() {
         return category.get();
     }
-
     public void setCategory(String category) {
         this.category.set(category);
     }

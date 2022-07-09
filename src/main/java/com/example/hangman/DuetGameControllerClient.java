@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.sql.SQLException;
@@ -41,10 +40,9 @@ public class DuetGameControllerClient implements Initializable {
     @FXML private Label phraseLabel, categoryLabel, errorLabel, correctLettersLabel , incorrectUsedLettersLabel, winLabel, playerInfoLabel;
     @FXML private TextField letterField;
     @FXML private AnchorPane letterBox;
-    @FXML private Button menuReturnButton, button;
+    @FXML private Button menuReturnButton;
 
     public DuetGameControllerClient() {}
-
     public DuetGameControllerClient(String login){
         playerlogin = login;
     }
@@ -73,7 +71,12 @@ public class DuetGameControllerClient implements Initializable {
             if(!Character.isLetter(letter)) { errorLabel.setText("Wpisz literę!"); }
             else{
                 boolean isUnique = true;
-                for (char c : usedLetters) { if(c == letter) isUnique = false; }
+                for (char c : usedLetters) {
+                    if (c == letter) {
+                        isUnique = false;
+                        break;
+                    }
+                }
                 if(!isUnique){ errorLabel.setText("Już użyta!"); }
                 else{
                     usedLetters.add(letter);
@@ -108,7 +111,6 @@ public class DuetGameControllerClient implements Initializable {
     public void updateGame(String teammateLetter) throws SQLException {
 
         char letter = teammateLetter.charAt(0);
-
         usedLetters.add(letter);
 
         Platform.runLater(() -> {
@@ -154,8 +156,8 @@ public class DuetGameControllerClient implements Initializable {
                     bw.write(odp.toString());
                     bw.newLine();
                     bw.flush();
-                    Platform.runLater(() -> playerInfoLabel.setText("Oczekiwanie na ruch gracza..."));
 
+                    Platform.runLater(() -> playerInfoLabel.setText("Oczekiwanie na ruch gracza..."));
                     Platform.runLater(() -> letterField.setDisable(true));
 
                     BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -171,7 +173,7 @@ public class DuetGameControllerClient implements Initializable {
                     System.out.println("Serwer wybrał literę '" + teammateLetter + "'.");
                     Platform.runLater(() -> playerInfoLabel.setText("Gracz " + teammateLogin + " wybrał literę '" + teammateLetter + "'."));
                 } catch (IOException | SQLException e){
-                    e.printStackTrace();
+                    System.out.println("[KLIENT]: Zakończono połączenie!");
                 }
             });
             t.start();
@@ -268,15 +270,12 @@ public class DuetGameControllerClient implements Initializable {
                 });
 
             } catch (IOException e) {
-                System.out.println("[KLIENT]: błąd połączenia!");
-                e.printStackTrace();
+                System.out.println("[KLIENT]: Zakończono połączenie!");
             }
         });
         t.start();
 
         // aby w fieldzie byly same wielkie litery
-        letterField.textProperty().addListener((ov, oldValue, newValue) -> {
-            letterField.setText(newValue.toUpperCase());
-        });
+        letterField.textProperty().addListener((ov, oldValue, newValue) -> letterField.setText(newValue.toUpperCase()));
     }
 }

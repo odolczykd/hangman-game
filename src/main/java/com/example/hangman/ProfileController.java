@@ -39,7 +39,6 @@ public class ProfileController implements Initializable {
     @FXML private TextArea newDescriptionTextArea;
 
     public ProfileController() {}
-
     public ProfileController(String login){
         playerlogin = login;
     }
