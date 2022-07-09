@@ -121,7 +121,7 @@ public class DuetGameControllerClient implements Initializable {
         for (char c : usedLetters) {
             if (phrase[0].indexOf(c) == -1) {  // 'phrase[0].indexOf(c)' zwraca '-1' jeżeli 'c' nie występuje w stringu 'phrase[0]'
 
-                Platform.runLater(() -> {incorrectUsedLettersLabel.setText(incorrectUsedLettersLabel.getText() + " " + c);});
+                Platform.runLater(() -> incorrectUsedLettersLabel.setText(incorrectUsedLettersLabel.getText() + " " + c));
 
                 if ((howManyMissed++) < 8) {
                     Platform.runLater(() -> {
@@ -130,10 +130,10 @@ public class DuetGameControllerClient implements Initializable {
                     });
                 }
             } else {
-                Platform.runLater(() -> { correctLettersLabel.setText(correctLettersLabel.getText() + " " + c); });
+                Platform.runLater(() -> correctLettersLabel.setText(correctLettersLabel.getText() + " " + c));
             }
         }
-        Platform.runLater(() -> {phraseLabel.setText(hidePhrase(phrase[0]));}); // wstawienie odgadniętych liter w "puste pola"
+        Platform.runLater(() -> phraseLabel.setText(hidePhrase(phrase[0]))); // wstawienie odgadniętych liter w "puste pola"
         actualPhrase = hidePhrase(phrase[0]);
         checkWin();
     }
@@ -154,9 +154,9 @@ public class DuetGameControllerClient implements Initializable {
                     bw.write(odp.toString());
                     bw.newLine();
                     bw.flush();
-                    Platform.runLater(() -> {playerInfoLabel.setText("Oczekiwanie na ruch gracza...");});
+                    Platform.runLater(() -> playerInfoLabel.setText("Oczekiwanie na ruch gracza..."));
 
-                    Platform.runLater(() -> {letterField.setDisable(true);});
+                    Platform.runLater(() -> letterField.setDisable(true));
 
                     BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String t1 = br.readLine();
@@ -167,9 +167,9 @@ public class DuetGameControllerClient implements Initializable {
                     updateGame(teammateLetter);
                     checkWin();
 
-                    Platform.runLater(() -> {letterField.setDisable(false);});
+                    Platform.runLater(() -> letterField.setDisable(false));
                     System.out.println("Serwer wybrał literę '" + teammateLetter + "'.");
-                    Platform.runLater(() -> {playerInfoLabel.setText("Gracz " + teammateLogin + " wybrał literę '" + teammateLetter + "'.");});
+                    Platform.runLater(() -> playerInfoLabel.setText("Gracz " + teammateLogin + " wybrał literę '" + teammateLetter + "'."));
                 } catch (IOException | SQLException e){
                     e.printStackTrace();
                 }
@@ -181,7 +181,7 @@ public class DuetGameControllerClient implements Initializable {
     public void checkWin() throws SQLException {
 
         // sprawdzenie czy hasło zawiera jeszcze jakieś niezgadnięte litery
-        Platform.runLater(() -> { actualPhrase = phraseLabel.getText(); });
+        Platform.runLater(() -> actualPhrase = phraseLabel.getText());
 
         if (!actualPhrase.contains("-")) { // jeżeli nie ma niezgadniętych liter
             Platform.runLater(() -> {

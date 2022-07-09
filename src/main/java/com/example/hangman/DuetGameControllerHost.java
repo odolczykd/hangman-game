@@ -119,7 +119,7 @@ public class DuetGameControllerHost implements Initializable {
         for (char c : usedLetters) {
             if (phrase[0].indexOf(c) == -1) {  // 'phrase[0].indexOf(c)' zwraca '-1' jeżeli 'c' nie występuje w stringu 'phrase[0]'
 
-                Platform.runLater(() -> {incorrectUsedLettersLabel.setText(incorrectUsedLettersLabel.getText() + " " + c);});
+                Platform.runLater(() -> incorrectUsedLettersLabel.setText(incorrectUsedLettersLabel.getText() + " " + c));
 
                 if ((howManyMissed++) < 8) {
                     Platform.runLater(() -> {
@@ -128,10 +128,10 @@ public class DuetGameControllerHost implements Initializable {
                     });
                 }
             } else {
-                Platform.runLater(() -> {correctLettersLabel.setText(correctLettersLabel.getText() + " " + c);});
+                Platform.runLater(() -> correctLettersLabel.setText(correctLettersLabel.getText() + " " + c));
             }
         }
-        Platform.runLater(() -> {phraseLabel.setText(hidePhrase(phrase[0]));}); // wstawienie odgadniętych liter w "puste pola"
+        Platform.runLater(() -> phraseLabel.setText(hidePhrase(phrase[0]))); // wstawienie odgadniętych liter w "puste pola"
 
         actualPhrase = hidePhrase(phrase[0]);
     }
@@ -151,8 +151,8 @@ public class DuetGameControllerHost implements Initializable {
                     bw.newLine();
                     bw.flush();
 
-                    Platform.runLater(() -> {playerInfoLabel.setText("Oczekiwanie na ruch gracza...");});
-                    Platform.runLater(() -> {letterField.setDisable(true);});
+                    Platform.runLater(() -> playerInfoLabel.setText("Oczekiwanie na ruch gracza..."));
+                    Platform.runLater(() -> letterField.setDisable(true));
 
                     BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String t1 = br.readLine();
@@ -163,9 +163,9 @@ public class DuetGameControllerHost implements Initializable {
 
                     checkWin();
 
-                    Platform.runLater(() -> {letterField.setDisable(false);});
+                    Platform.runLater(() -> letterField.setDisable(false));
                     System.out.println("Klient wybrał literę '" + teammateLetter + "'.");
-                    Platform.runLater(() -> {playerInfoLabel.setText("Gracz " + teammateLogin + " wybrał literę '" + teammateLetter + "'.");});
+                    Platform.runLater(() -> playerInfoLabel.setText("Gracz " + teammateLogin + " wybrał literę '" + teammateLetter + "'."));
                 } catch (IOException | SQLException e) {
                     e.printStackTrace();
                 }
@@ -178,7 +178,7 @@ public class DuetGameControllerHost implements Initializable {
 
 
         // sprawdzenie czy hasło zawiera jeszcze jakieś niezgadnięte litery
-        Platform.runLater(() -> { actualPhrase = phraseLabel.getText(); });
+        Platform.runLater(() -> actualPhrase = phraseLabel.getText());
 
         if (!actualPhrase.contains("-")) { // jeżeli nie ma niezgadniętych liter
             Platform.runLater(() -> {
@@ -264,7 +264,7 @@ public class DuetGameControllerHost implements Initializable {
                 try {
                     System.out.println("server is started");
 
-                    Platform.runLater(() -> { playerInfoLabel.setText("Oczekiwanie na gracza..."); });
+                    Platform.runLater(() -> playerInfoLabel.setText("Oczekiwanie na gracza..."));
                     System.out.println("Oczekiwanie na gracza");
 
                     ServerSocket serverSocket = new ServerSocket(8080);
@@ -273,7 +273,7 @@ public class DuetGameControllerHost implements Initializable {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     teammateLogin = reader.readLine();
 
-                    Platform.runLater(() -> { playerInfoLabel.setText("Gracz " + teammateLogin + " dołączył do gry!"); });
+                    Platform.runLater(() -> playerInfoLabel.setText("Gracz " + teammateLogin + " dołączył do gry!"));
                     System.out.println("Gracz " + teammateLogin + " dołączył do gry");
 
                     // wysyłanie danych o grze drugiemu graczowi

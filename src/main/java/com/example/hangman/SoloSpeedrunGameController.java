@@ -157,11 +157,11 @@ public class SoloSpeedrunGameController implements Initializable {
 
         if(isHighscoreBeated){
             winLabel.setTextFill(Color.web("#00ae06"));
-            Platform.runLater(() -> { winLabel.setText("Koniec gry, Pobito rekord!"); });
+            Platform.runLater(() -> winLabel.setText("Koniec gry, Pobito rekord!"));
         }
         else{
             winLabel.setTextFill(Color.web("#e1b800"));
-            Platform.runLater(() -> { winLabel.setText("Koniec gry, Nie udało Ci się pobić rekordu :("); });
+            Platform.runLater(() -> winLabel.setText("Koniec gry, Nie udało Ci się pobić rekordu :("));
         }
 
         winLabel.setVisible(true);
@@ -224,10 +224,10 @@ public class SoloSpeedrunGameController implements Initializable {
             int i = 121;
             @Override
             public void run() {
-                Platform.runLater(() -> { timerLabel.setText("Czas: " + timeConverter(i)); });
+                Platform.runLater(() -> timerLabel.setText("Czas: " + timeConverter(i)));
                 i--;
                 if(i==0){
-                    Platform.runLater(() -> { timerLabel.setText("Czas: 00:00"); });
+                    Platform.runLater(() -> timerLabel.setText("Czas: 00:00"));
                     scheduler.shutdown();
                     try {
                         endRound();
