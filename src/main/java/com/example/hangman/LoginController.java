@@ -36,14 +36,14 @@ public class LoginController {
     }
 
     @FXML
-    protected void onRegisterButtonClick() throws SQLException {
+    protected void onRegisterButtonClick(){
 
         // sprawdzanie poprawnosci danych
         String errorMessages = "";
         errorLabel.setTextFill(Color.web("#ff0000"));
 
         if(loginField.getText().length() == 0){ errorMessages += "Wprowadź login!   "; }
-        if(passwordField.getText().length() == 0){errorMessages += "Wprowadź haslo!   "; }
+        if(passwordField.getText().length() == 0){errorMessages += "Wprowadź hasło!   "; }
 
         if(!descriptionBox.isVisible()){ descriptionBox.setVisible(true); }
         else {
@@ -53,33 +53,39 @@ public class LoginController {
             errorLabel.setText(errorMessages);
 
             if(errorMessages.length() == 0){
+
                 // łączenie z bazą i dodanie użytkownika
-                DbConnection dbc = new DbConnection();
-                if(dbc.checkIfUserExists(loginField.getText())){
-                    errorLabel.setText("Login \"" + loginField.getText() + "\" jest zajęty!");
-                }
-                else{
-                    dbc.addUser(loginField.getText(),passwordField.getText(),descriptionField.getText());
-                    errorLabel.setText("Rejestracja ukończona, możesz się teraz zalogować!");
-                    errorLabel.setTextFill(Color.web("#00a316"));
-                    descriptionBox.setVisible(false);
-                    loginField.setText("");
-                    passwordField.setText("");
-                    dbc.closeConnection();
+                try {
+                    DbConnection dbc = new DbConnection();
+                    if (dbc.checkIfUserExists(loginField.getText())) {
+                        errorLabel.setText("Login \"" + loginField.getText() + "\" jest zajęty!");
+                    } else {
+                        dbc.addUser(loginField.getText(), passwordField.getText(), descriptionField.getText());
+                        errorLabel.setText("Rejestracja ukończona, możesz się teraz zalogować!");
+                        errorLabel.setTextFill(Color.web("#00a316"));
+                        descriptionBox.setVisible(false);
+                        loginField.setText("");
+                        passwordField.setText("");
+                        dbc.closeConnection();
+                    }
+                } catch(SQLException e){
+                    e.printStackTrace();
+                    errorLabel.setTextFill(Color.web("#ff0000"));
+                    errorLabel.setText("Nie udało się połączyć z bazą danych!");
                 }
             }
         }
     }
 
     @FXML
-    protected void onLoginButtonClick() throws SQLException, IOException {
+    protected void onLoginButtonClick() throws IOException {
 
         // sprawdzanie poprawnosci danych
         String errorMessages = "";
         errorLabel.setTextFill(Color.web("#ff0000"));
 
         if(loginField.getText().length() == 0){ errorMessages += "Wprowadź login!   "; }
-        if(passwordField.getText().length() == 0){ errorMessages += "Wprowadź haslo!   "; }
+        if(passwordField.getText().length() == 0){ errorMessages += "Wprowadź hasło!   "; }
 
         // wyswietlanie komunikatu o blednych danych uzytkownikowi
         errorLabel.setText(errorMessages);
@@ -87,35 +93,41 @@ public class LoginController {
         if(errorMessages.length() == 0){
 
             // łączenie z bazą i dodanie użytkownika
-            DbConnection dbc = new DbConnection();
-            if(dbc.checkIfUserExists(loginField.getText())){
-                //sprawdzanie czy wprowadzone haslo jest poprawne
-                if(dbc.getUserPassword(loginField.getText()).equals(passwordField.getText())){
-                    String currentUser = dbc.getUserLogin(loginField.getText());
+            try {
+                DbConnection dbc = new DbConnection();
+                if(dbc.checkIfUserExists(loginField.getText())){
+                    //sprawdzanie czy wprowadzone haslo jest poprawne
+                    if(dbc.getUserPassword(loginField.getText()).equals(passwordField.getText())){
+                        String currentUser = dbc.getUserLogin(loginField.getText());
 
-                    // panel dla administratora
-                    if(currentUser.equalsIgnoreCase("admin")){
-                        AdminController ac = new AdminController(currentUser);
-                        ac.openWindow();
+                        // panel dla administratora
+                        if(currentUser.equalsIgnoreCase("admin")){
+                            AdminController ac = new AdminController(currentUser);
+                            ac.openWindow();
+                        }
+                        // menu w przypadku zwyklego uzytkownika
+                        else {
+                            MainMenuController mmc = new MainMenuController(currentUser);
+                            mmc.openWindow();
+                        }
+
+                        // zamykanie okna logowania
+                        Stage stage = (Stage) errorLabel.getScene().getWindow();
+                        stage.close();
                     }
-                    // menu w przypadku zwyklego uzytkownika
                     else {
-                        MainMenuController mmc = new MainMenuController(currentUser);
-                        mmc.openWindow();
+                        errorLabel.setTextFill(Color.web("#ff0000"));
+                        errorLabel.setText("Bledny login lub haslo!");
                     }
-
-                // zamykanie okna logowania
-                    Stage stage = (Stage) errorLabel.getScene().getWindow();
-                    stage.close();
                 }
-                else {
+                else{
                     errorLabel.setTextFill(Color.web("#ff0000"));
-                    errorLabel.setText("Bledny login lub haslo!");
+                    errorLabel.setText("Podany login nie istnieje, zarejestruj się!");
                 }
-            }
-            else{
+            } catch(SQLException e) {
+                e.printStackTrace();
                 errorLabel.setTextFill(Color.web("#ff0000"));
-                errorLabel.setText("Podany login nie istnieje, zarejestruj się!");
+                errorLabel.setText("Nie udało się połączyć z bazą danych!");
             }
         }
     }

@@ -17,39 +17,27 @@ public class DbConnection {
         c = null;
         rset = null;
         c = DriverManager
-            .getConnection("jdbc:mysql://remotemysql.com/aeCwkdZjzZ", "aeCwkdZjzZ", "jaCfRCsMNb");
+            .getConnection("jdbc:mysql://sql11.freemysqlhosting.net/sql11506091", "sql11506091", "BqV3SgpXFz");
         stmt = c.createStatement();
     }
 
     public boolean checkIfUserExists(String login) throws SQLException {
-        boolean val;
-
         rset = stmt.executeQuery("SELECT COUNT(loginUzytk) FROM Uzytkownicy WHERE loginUzytk = '" + login + "';");
         rset.next();
-        val = rset.getInt(1) != 0;
-
-        return val;
+        return (rset.getInt(1) != 0);
     }
 
     public String getUserPassword(String login) throws SQLException {
-        String password;
-
         rset = stmt.executeQuery("SELECT hasloUzytk FROM Uzytkownicy WHERE loginUzytk = '" + login + "';");
         rset.next();
-        password = rset.getString(1);
-
-        return password;
+        return rset.getString(1);
     }
 
     // otrzymanie struktury loginu z wyróżnionymi małymi oraz wielkimi znakami
     public String getUserLogin(String login) throws SQLException {
-        String result;
-
         rset = stmt.executeQuery("SELECT loginUzytk FROM Uzytkownicy WHERE loginUzytk = '" + login + "';");
         rset.next();
-        result = rset.getString(1);
-
-        return result;
+        return rset.getString(1);
     }
 
     public void addUser(String login, String password, String description) throws SQLException {
@@ -100,21 +88,18 @@ public class DbConnection {
     public String getUserDescription(String login) throws SQLException {
         rset = stmt.executeQuery("SELECT opisUzytk FROM Uzytkownicy WHERE loginUzytk = '" + login + "';");
         rset.next();
-
         return rset.getString(1);
     }
 
     public int countNormalPoints(String login) throws SQLException {
         rset = stmt.executeQuery("SELECT COUNT(idHasla) FROM RozwiazaneHasla WHERE loginUzytk = '" + login + "';");
         rset.next();
-
         return rset.getInt(1);
     }
 
     public int getSpeedrunHighScore(String login) throws SQLException {
         rset = stmt.executeQuery("SELECT liczbaPkt FROM Ranking WHERE loginUzytk = '" + login + "';");
         rset.next();
-
         return rset.getInt(1);
     }
 

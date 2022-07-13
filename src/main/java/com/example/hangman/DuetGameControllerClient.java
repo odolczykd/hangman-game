@@ -85,7 +85,7 @@ public class DuetGameControllerClient implements Initializable {
                     howManyMissed = 0;
                     // sprawdzenie które z użytych liter znajdują się w haśle, a które nie
                     for (char c: usedLetters) {
-                        if(phrase[0].indexOf(c) == -1 ){  // 'phrase[0].indexOf(c)' zwraca '-1' jeżeli 'c' nie występuje w stringu 'phrase[0]'
+                        if(phrase[0].indexOf(c) == -1) {  // 'phrase[0].indexOf(c)' zwraca '-1' jeżeli 'c' nie występuje w stringu 'phrase[0]'
                             incorrectUsedLettersLabel.setText(incorrectUsedLettersLabel.getText() + " " + c);
 
                             if((howManyMissed++) < 8){
