@@ -1,6 +1,7 @@
 package com.example.hangman;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -52,6 +54,18 @@ public class DuetGameControllerClient implements Initializable {
         Scene scene = new Scene(fxmlLoader.load(), 735, 500);
         Stage stage = new Stage();
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/icon.png")));
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                try {
+                    disconnect();
+                    if(!socket.isClosed()) socket.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                System.exit(0);
+            }
+        });
         stage.getIcons().add(image);
         stage.setResizable(false);
         stage.setTitle("Wisielec - Gra w duecie");
@@ -146,7 +160,7 @@ public class DuetGameControllerClient implements Initializable {
 
             Thread t = new Thread(() -> {
                 try {
-                    System.out.println("wysylam ruch");
+                    System.out.println("[KLIENT]: Wysylam ruch.");
 
                     JSONObject odp = new JSONObject();
                     odp.put("letter", lastLetter);
@@ -164,14 +178,32 @@ public class DuetGameControllerClient implements Initializable {
                     String t1 = br.readLine();
                     JSONObject json = new JSONObject(t1);
                     String teammateLetter = json.optString("letter");
-                    System.out.println("odebrano ruch");
 
-                    updateGame(teammateLetter);
-                    checkWin();
+                    if (teammateLetter.equals("<disconnected>")){
+                        Platform.runLater(() -> {
+                            phraseLabel.setTextFill(Color.web("#ff0000"));
+                            phraseLabel.setText("Gracz opuścił rozgrywkę!\n Wróć do menu i spróbuj ponownie.");
+                            playerInfoLabel.setVisible(false);
+                            categoryLabel.setVisible(false);
+                            winLabel.setVisible(false);
+                            hangmanImage.setVisible(false);
+                            letterBox.setVisible(false);
+                            menuReturnButton.setVisible(true);
+                        });
+                        socket.close();
+                    }
+                    else{
+                        System.out.println("[KLIENT]: Odebrano ruch");
 
-                    Platform.runLater(() -> letterField.setDisable(false));
-                    System.out.println("Serwer wybrał literę '" + teammateLetter + "'.");
-                    Platform.runLater(() -> playerInfoLabel.setText("Gracz " + teammateLogin + " wybrał literę '" + teammateLetter + "'."));
+                        updateGame(teammateLetter);
+                        checkWin();
+
+                        Platform.runLater(() -> letterField.setDisable(false));
+                        System.out.println("Serwer wybrał literę '" + teammateLetter + "'.");
+                        Platform.runLater(() -> playerInfoLabel.setText("Gracz " + teammateLogin + " wybrał literę '" + teammateLetter + "'."));
+                    }
+
+
                 } catch (IOException | SQLException e){
                     System.out.println("[KLIENT]: Zakończono połączenie!");
                 }
@@ -215,8 +247,25 @@ public class DuetGameControllerClient implements Initializable {
         return hidden;
     }
 
+    public void disconnect() throws IOException {
+        if(socket != null) {
+            if(!socket.isClosed()){
+                JSONObject odp = new JSONObject();
+                odp.put("letter", "<disconnected>");
+                System.out.println("[KLIENT]: rozłączono");
+
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                bw.write(odp.toString());
+                bw.newLine();
+                bw.flush();
+            }
+
+        }
+    }
+
     @FXML
     public void onHomeImageClick() throws IOException {
+        disconnect();
         if(socket != null) socket.close();
         MainMenuController mmc = new MainMenuController(playerlogin);
         mmc.openWindow();
@@ -226,6 +275,7 @@ public class DuetGameControllerClient implements Initializable {
 
     @FXML
     public void onExitImageClick() throws IOException {
+        disconnect();
         if(socket != null) socket.close();
         Stage stage = (Stage) exitImage.getScene().getWindow();
         stage.close();
@@ -233,6 +283,7 @@ public class DuetGameControllerClient implements Initializable {
 
     @FXML
     public void onLogoutImageClick() throws IOException {
+        disconnect();
         if(socket != null) socket.close();
         LoginController lc = new LoginController();
         lc.reopenWindow();
@@ -271,6 +322,16 @@ public class DuetGameControllerClient implements Initializable {
 
             } catch (IOException e) {
                 System.out.println("[KLIENT]: Zakończono połączenie!");
+                Platform.runLater(() -> {
+                    phraseLabel.setTextFill(Color.web("#ff0000"));
+                    phraseLabel.setText("Połączenie nieudane!\n Wróć do menu i spróbuj ponownie.");
+                    categoryLabel.setVisible(false);
+                    winLabel.setVisible(false);
+                    hangmanImage.setVisible(false);
+                    letterBox.setVisible(false);
+                    menuReturnButton.setVisible(true);
+                });
+
             }
         });
         t.start();

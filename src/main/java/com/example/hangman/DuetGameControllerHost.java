@@ -31,6 +31,7 @@ public class DuetGameControllerHost implements Initializable {
     private String actualPhrase;
     private String[] phrase;
     private String teammateLogin;
+    private ServerSocket serverSocket;
     private Socket socket;
     private int phraseId;
     private List<Character> usedLetters = new ArrayList<>();
@@ -52,6 +53,21 @@ public class DuetGameControllerHost implements Initializable {
         Scene scene = new Scene(fxmlLoader.load(), 735, 500);
         Stage stage = new Stage();
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/icon.png")));
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                try {
+                    disconnect();
+                    if(!socket.isClosed()) socket.close();
+                    if(!serverSocket.isClosed()) serverSocket.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+                System.exit(0);
+            }
+        });
         stage.getIcons().add(image);
         stage.setResizable(false);
         stage.setTitle("Wisielec - Gra w duecie");
@@ -142,7 +158,7 @@ public class DuetGameControllerHost implements Initializable {
         if (checkLetter()) {
             Thread t = new Thread(() -> {
                 try {
-                    System.out.println("wysylam ruch");
+                    System.out.println("[SERWER]: Wysylam ruch");
 
                     JSONObject odp = new JSONObject();
                     odp.put("letter", lastLetter);
@@ -160,14 +176,34 @@ public class DuetGameControllerHost implements Initializable {
                     String t1 = br.readLine();
                     JSONObject json = new JSONObject(t1);
                     String teammateLetter = json.optString("letter");
-                    System.out.println("odebrano ruch");
-                    updateGame(teammateLetter);
 
-                    checkWin();
 
-                    Platform.runLater(() -> letterField.setDisable(false));
-                    System.out.println("Klient wybrał literę '" + teammateLetter + "'.");
-                    Platform.runLater(() -> playerInfoLabel.setText("Gracz " + teammateLogin + " wybrał literę '" + teammateLetter + "'."));
+                    if (teammateLetter.equals("<disconnected>")){
+                        Platform.runLater(() -> {
+                            phraseLabel.setTextFill(Color.web("#ff0000"));
+                            phraseLabel.setText("Gracz opuścił rozgrywkę!\n Wróć do menu i spróbuj ponownie.");
+                            playerInfoLabel.setVisible(false);
+                            categoryLabel.setVisible(false);
+                            winLabel.setVisible(false);
+                            hangmanImage.setVisible(false);
+                            letterBox.setVisible(false);
+                            menuReturnButton.setVisible(true);
+                        });
+                        socket.close();
+                        if(!serverSocket.isClosed()) serverSocket.close();
+                    }
+                    else{
+                        System.out.println("[SERWER]: Odebrano ruch");
+                        updateGame(teammateLetter);
+
+                        checkWin();
+
+                        Platform.runLater(() -> letterField.setDisable(false));
+                        System.out.println("Klient wybrał literę '" + teammateLetter + "'.");
+                        Platform.runLater(() -> playerInfoLabel.setText("Gracz " + teammateLogin + " wybrał literę '" + teammateLetter + "'."));
+                    }
+
+
                 } catch (IOException | SQLException e) {
                     System.out.println("[SERWER]: Zakończono połączenie!");
                 }
@@ -213,7 +249,9 @@ public class DuetGameControllerHost implements Initializable {
 
     @FXML
     public void onHomeImageClick() throws IOException {
+        disconnect();
         if(socket != null) socket.close();
+        if(!socket.isClosed()) serverSocket.close();
         MainMenuController mmc = new MainMenuController(playerlogin);
         mmc.openWindow();
         Stage stage = (Stage) exitImage.getScene().getWindow();
@@ -222,7 +260,9 @@ public class DuetGameControllerHost implements Initializable {
 
     @FXML
     public void onExitImageClick() throws IOException {
+        disconnect();
         if(socket != null) socket.close();
+        if(!socket.isClosed()) serverSocket.close();
         Stage stage = (Stage) exitImage.getScene().getWindow();
         stage.close();
 
@@ -230,12 +270,31 @@ public class DuetGameControllerHost implements Initializable {
 
     @FXML
     public void onLogoutImageClick() throws IOException {
+        disconnect();
         if(socket != null) socket.close();
+        if(!socket.isClosed()) serverSocket.close();
         LoginController lc = new LoginController();
         lc.reopenWindow();
         Stage stage = (Stage) logoutImage.getScene().getWindow();
         stage.close();
     }
+
+    public void disconnect() throws IOException {
+        if(socket != null) {
+            if(!socket.isClosed()){
+                JSONObject odp = new JSONObject();
+                odp.put("letter", "<disconnected>");
+                System.out.println("[SERWER]: rozłączono");
+
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                bw.write(odp.toString());
+                bw.newLine();
+                bw.flush();
+            }
+
+        }
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -259,12 +318,12 @@ public class DuetGameControllerHost implements Initializable {
 
         Thread t = new Thread(() -> {
             try {
-                System.out.println("server is started");
+                System.out.println("[SERWER UTWORZONY]");
 
                 Platform.runLater(() -> playerInfoLabel.setText("Oczekiwanie na gracza..."));
-                System.out.println("Oczekiwanie na gracza");
+                System.out.println("[SERWER]: Oczekiwanie na gracza");
 
-                ServerSocket serverSocket = new ServerSocket(8080);
+                serverSocket = new ServerSocket(8080);
                 socket = serverSocket.accept();
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -290,12 +349,31 @@ public class DuetGameControllerHost implements Initializable {
                 JSONObject json = new JSONObject(t1);
                 String teammateLetter = json.optString("letter");
 
-                Platform.runLater(() -> {
-                    letterField.setDisable(false);
-                    System.out.println("Klient wybrał literę '" + teammateLetter + "'.");
-                });
+                if (teammateLetter.equals("<disconnected>")){
+                    Platform.runLater(() -> {
+                        phraseLabel.setTextFill(Color.web("#ff0000"));
+                        phraseLabel.setText("Gracz opuścił rozgrywkę!\n Wróć do menu i spróbuj ponownie.");
+                        playerInfoLabel.setVisible(false);
+                        categoryLabel.setVisible(false);
+                        winLabel.setVisible(false);
+                        hangmanImage.setVisible(false);
+                        letterBox.setVisible(false);
+                        menuReturnButton.setVisible(true);
+                    });
+                    socket.close();
+                    if(!serverSocket.isClosed()) serverSocket.close();
 
-                updateGame(String.valueOf(teammateLetter.charAt(0)));
+                }
+                else{
+                    Platform.runLater(() -> {
+                        letterField.setDisable(false);
+                        System.out.println("Klient wybrał literę '" + teammateLetter + "'.");
+                    });
+
+                    updateGame(String.valueOf(teammateLetter.charAt(0)));
+                }
+
+
 
             } catch (IOException | SQLException e) {
                 System.out.println("[SERWER]: Zakończono połączenie!");
