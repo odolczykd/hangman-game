@@ -17,7 +17,7 @@ public class DbConnection {
         c = null;
         rset = null;
         c = DriverManager
-            .getConnection("jdbc:mysql://sql11.freemysqlhosting.net/sql11506091", "sql11506091", "BqV3SgpXFz");
+            .getConnection("jdbc:mysql://remotemysql.com/aeCwkdZjzZ", "aeCwkdZjzZ", "jaCfRCsMNb");
         stmt = c.createStatement();
     }
 

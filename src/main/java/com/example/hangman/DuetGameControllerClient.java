@@ -29,6 +29,7 @@ import java.util.ResourceBundle;
 public class DuetGameControllerClient implements Initializable {
 
     private static String playerlogin;
+    private static String serverHostname;
     private String actualPhrase;
     private String[] phrase;
     private String teammateLogin;
@@ -45,8 +46,9 @@ public class DuetGameControllerClient implements Initializable {
     @FXML private Button menuReturnButton;
 
     public DuetGameControllerClient() {}
-    public DuetGameControllerClient(String login){
-        playerlogin = login;
+    public DuetGameControllerClient(String playerlogin, String ServerHostname){
+        this.playerlogin = playerlogin;
+        this.serverHostname = ServerHostname;
     }
 
     public void openWindow() throws IOException {
@@ -59,7 +61,7 @@ public class DuetGameControllerClient implements Initializable {
             public void handle(WindowEvent windowEvent) {
                 try {
                     disconnect();
-                    if(!socket.isClosed()) socket.close();
+                    if(socket != null) if(!socket.isClosed()) socket.close();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -171,7 +173,11 @@ public class DuetGameControllerClient implements Initializable {
                     bw.newLine();
                     bw.flush();
 
-                    Platform.runLater(() -> playerInfoLabel.setText("Oczekiwanie na ruch gracza..."));
+                    Platform.runLater(() -> {
+                        if (!menuReturnButton.isVisible())
+                            playerInfoLabel.setText("Oczekiwanie na ruch gracza...");
+                        else playerInfoLabel.setText("");
+                    });
                     Platform.runLater(() -> letterField.setDisable(true));
 
                     BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -295,7 +301,25 @@ public class DuetGameControllerClient implements Initializable {
 
         Thread t = new Thread(() -> {
             try {
-                socket = new Socket("127.0.0.1", 8080);
+
+                Platform.runLater(() -> {
+                    phraseLabel.setText("Łączenie z hostem...");
+                    categoryLabel.setVisible(false);
+                    winLabel.setVisible(false);
+                    hangmanImage.setVisible(false);
+                    letterBox.setVisible(false);
+                });
+
+                System.out.println("[KLIENT]: Lacze z ip: '" + serverHostname + "'...");
+                socket = new Socket(serverHostname, 8080);
+                System.out.println("[KLIENT]: Połączenie udane!");
+
+                Platform.runLater(() -> {
+                    playerInfoLabel.setText("Dołączono do gry!");
+                    categoryLabel.setVisible(true);
+                    hangmanImage.setVisible(true);
+                    letterBox.setVisible(true);
+                });
 
                 //wysyłanie naszego loginu hostowi
                 BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));

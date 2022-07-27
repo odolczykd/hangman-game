@@ -72,7 +72,7 @@ public class DuetGameTypeController {
         }
         else{
             System.out.println("Zaczynam gre duet. Dolaczajacy: \"" + playerlogin + "\". Hostname: \"" + hostnameField.getText() + "\"");
-            DuetGameControllerClient dgcc = new DuetGameControllerClient(playerlogin);
+            DuetGameControllerClient dgcc = new DuetGameControllerClient(playerlogin, hostnameField.getText());
             dgcc.openWindow();
             Stage stage = (Stage) joinGameImage.getScene().getWindow();
             stage.close();

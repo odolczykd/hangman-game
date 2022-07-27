@@ -58,8 +58,8 @@ public class DuetGameControllerHost implements Initializable {
             public void handle(WindowEvent windowEvent) {
                 try {
                     disconnect();
-                    if(!socket.isClosed()) socket.close();
-                    if(!serverSocket.isClosed()) serverSocket.close();
+                    if(socket != null) if(!socket.isClosed()) socket.close();
+                    if(serverSocket != null) if(!serverSocket.isClosed()) serverSocket.close();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -169,7 +169,11 @@ public class DuetGameControllerHost implements Initializable {
                     bw.newLine();
                     bw.flush();
 
-                    Platform.runLater(() -> playerInfoLabel.setText("Oczekiwanie na ruch gracza..."));
+                    Platform.runLater(() -> {
+                                if (!menuReturnButton.isVisible())
+                                    playerInfoLabel.setText("Oczekiwanie na ruch gracza...");
+                                else playerInfoLabel.setText("");
+                            });
                     Platform.runLater(() -> letterField.setDisable(true));
 
                     BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -190,7 +194,7 @@ public class DuetGameControllerHost implements Initializable {
                             menuReturnButton.setVisible(true);
                         });
                         socket.close();
-                        if(!serverSocket.isClosed()) serverSocket.close();
+                        if(serverSocket != null) if(!serverSocket.isClosed()) serverSocket.close();
                     }
                     else{
                         System.out.println("[SERWER]: Odebrano ruch");
@@ -251,7 +255,7 @@ public class DuetGameControllerHost implements Initializable {
     public void onHomeImageClick() throws IOException {
         disconnect();
         if(socket != null) socket.close();
-        if(!socket.isClosed()) serverSocket.close();
+        if(serverSocket != null) if(!serverSocket.isClosed()) serverSocket.close();
         MainMenuController mmc = new MainMenuController(playerlogin);
         mmc.openWindow();
         Stage stage = (Stage) exitImage.getScene().getWindow();
@@ -262,7 +266,7 @@ public class DuetGameControllerHost implements Initializable {
     public void onExitImageClick() throws IOException {
         disconnect();
         if(socket != null) socket.close();
-        if(!socket.isClosed()) serverSocket.close();
+        if(serverSocket != null) if(!serverSocket.isClosed()) serverSocket.close();
         Stage stage = (Stage) exitImage.getScene().getWindow();
         stage.close();
 
@@ -272,7 +276,7 @@ public class DuetGameControllerHost implements Initializable {
     public void onLogoutImageClick() throws IOException {
         disconnect();
         if(socket != null) socket.close();
-        if(!socket.isClosed()) serverSocket.close();
+        if(serverSocket != null) if(!serverSocket.isClosed()) serverSocket.close();
         LoginController lc = new LoginController();
         lc.reopenWindow();
         Stage stage = (Stage) logoutImage.getScene().getWindow();
@@ -361,7 +365,7 @@ public class DuetGameControllerHost implements Initializable {
                         menuReturnButton.setVisible(true);
                     });
                     socket.close();
-                    if(!serverSocket.isClosed()) serverSocket.close();
+                    if(serverSocket != null) if(!serverSocket.isClosed()) serverSocket.close();
 
                 }
                 else{
@@ -377,6 +381,16 @@ public class DuetGameControllerHost implements Initializable {
 
             } catch (IOException | SQLException e) {
                 System.out.println("[SERWER]: Zakończono połączenie!");
+                Platform.runLater(() -> {
+                    phraseLabel.setTextFill(Color.web("#ff0000"));
+                    phraseLabel.setText("Problem z połączeniem!\nSprawdź czy nie ma innego hosta i spróbuj ponownie!");
+                    playerInfoLabel.setVisible(false);
+                    categoryLabel.setVisible(false);
+                    winLabel.setVisible(false);
+                    hangmanImage.setVisible(false);
+                    letterBox.setVisible(false);
+                    menuReturnButton.setVisible(true);
+                });
             }
         });
         t.start();
